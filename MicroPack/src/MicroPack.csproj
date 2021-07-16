@@ -1,0 +1,123 @@
+
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>net5.0</TargetFramework>
+    <AddRazorSupportForMvc>true</AddRazorSupportForMvc>
+    <ExcludeGeneratedDebugSymbol>False</ExcludeGeneratedDebugSymbol>
+    <AssemblyName>MicroPack</AssemblyName>
+    <Authors>Meysam Hadeli</Authors>
+    <Summary>MicroPack is a framework for quickly and conveniently creating microservices on .NET Core.</Summary>
+    <Description>MicroPack is a framework for quickly and conveniently creating microservices on .NET Core.</Description>
+    <PackageId>MicroPack</PackageId>
+    <PackageProjectUrl>https://github.com/meysamhadeli/MicroPack</PackageProjectUrl>
+    <PublishRepositoryUrl>true</PublishRepositoryUrl> 
+    <RepositoryUrl>https://github.com/meysamhadeli/MicroPack.git</RepositoryUrl>
+    <RootNamespace>MicroPack</RootNamespace>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <PackageTags>'.net;c#;dotnet;dotnetcore;aspnetcore; application-framework; web-framework; framework;webapi; domain-driven-design;architecture;microservices;cqrs; rabbitmQ; microservices-framework; clean-architecture;docker;kubernetes;event-sourcing</PackageTags>
+    <EmbedUntrackedSources>true</EmbedUntrackedSources>
+    <Deterministic>true</Deterministic>
+    <BaselineAllAPICompatError>true</BaselineAllAPICompatError>
+    <LangVersion>latest</LangVersion>
+  </PropertyGroup>
+
+<PropertyGroup>
+   <IsPackable>true</IsPackable>
+</PropertyGroup>
+
+  <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
+    <Optimize>true</Optimize>
+  </PropertyGroup>
+  
+  <ItemGroup>
+    <PackageReference Include="App.Metrics.Core" Version="3.1.0" />
+    <PackageReference Include="App.Metrics.AspNetCore" Version="3.1.0" />
+    <PackageReference Include="App.Metrics.AspNetCore.Core" Version="3.1.0" />
+    <PackageReference Include="App.Metrics.AspNetCore.Endpoints" Version="3.1.0" />
+    <PackageReference Include="App.Metrics.AspNetCore.Health" Version="3.1.0" />
+    <PackageReference Include="App.Metrics.AspNetCore.Health.Endpoints" Version="3.1.0" />
+    <PackageReference Include="App.Metrics.AspNetCore.Hosting" Version="3.1.0" />
+    <PackageReference Include="App.Metrics.AspNetCore.Mvc" Version="3.1.0" />
+    <PackageReference Include="App.Metrics.AspNetCore.Reporting" Version="3.1.0" />
+    <PackageReference Include="App.Metrics.AspNetCore.Routing" Version="3.1.0" />
+    <PackageReference Include="App.Metrics.AspNetCore.Tracking" Version="3.1.0" />
+    <PackageReference Include="App.Metrics.Extensions.Configuration" Version="3.1.0" />
+    <PackageReference Include="App.Metrics.Extensions.DependencyInjection" Version="3.1.0" />
+    <PackageReference Include="App.Metrics.Formatters.InfluxDB" Version="3.1.0" />
+    <PackageReference Include="App.Metrics.Formatters.Json" Version="3.1.0" />
+    <PackageReference Include="App.Metrics.Formatters.Prometheus" Version="3.1.0" />
+    <PackageReference Include="App.Metrics.Health.Checks.Http" Version="3.1.0" />
+    <PackageReference Include="App.Metrics.Reporting.Console" Version="3.1.0" />
+    <PackageReference Include="App.Metrics.Reporting.Http" Version="3.1.0" />
+    <PackageReference Include="App.Metrics.Reporting.InfluxDB" Version="3.1.0" />
+    <PackageReference Include="Autofac" Version="4.9.2" />
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.Certificate" Version="5.0.0" />
+<!--    <PackageReference Include="Microsoft.AspNetCore.Diagnostics" Version="2.2.0" />-->
+    <PackageReference Include="Autofac.Extensions.DependencyInjection" Version="4.4.0" />
+    <PackageReference Include="Consul" Version="0.7.2.6" />
+    <PackageReference Include="Lockbox.Client" Version="2.0.2" />
+    <PackageReference Include="Jaeger" Version="0.4.1" />
+    <PackageReference Include="MediatR" Version="8.1.0" />
+    <PackageReference Include="MediatR.Extensions.Microsoft.DependencyInjection" Version="8.1.0" />
+<!--    <PackageReference Include="Microsoft.AspNetCore.Authentication" Version="2.2.0" />-->
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="5.0.0" />
+<!--    <PackageReference Include="Microsoft.AspNetCore.Authorization" Version="2.2.0" />-->
+<!--    <PackageReference Include="Microsoft.AspNetCore.Hosting" Version="2.2.0" />-->
+<!--    <PackageReference Include="Microsoft.AspNetCore.Identity" Version="2.2.0" />-->
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="5.0.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Owin" Version="5.0.0" />
+<!--    <PackageReference Include="Microsoft.AspNetCore.Server.Kestrel" Version="2.2.0" />-->
+<!--    <PackageReference Include="Microsoft.AspNetCore.StaticFiles" Version="2.2.0" />-->
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="5.0.0" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="5.0.0" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer.Design" Version="2.0.0-preview1-final" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="5.0.0" />
+
+    <PackageReference Include="Microsoft.Extensions.Configuration.Binder" Version="5.0.0" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.CommandLine" Version="5.0.0" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.EnvironmentVariables" Version="5.0.0" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.FileExtensions" Version="5.0.0" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="5.0.0" />
+    <PackageReference Include="Microsoft.Extensions.Http" Version="5.0.0" />
+    <PackageReference Include="MongoDB.Driver" Version="2.11.2" />
+    <PackageReference Include="Newtonsoft.Json" Version="12.0.2" />
+    <PackageReference Include="OpenTracing" Version="0.12.1" />
+    <PackageReference Include="OpenTracing.Contrib.NetCore" Version="0.6.2" />
+    <PackageReference Include="RestEase" Version="1.4.9" />
+    <PackageReference Include="Microsoft.Extensions.Logging" Version="5.0.0" />
+    <PackageReference Include="Serilog" Version="2.10.0" />
+    <PackageReference Include="Serilog.AspNetCore" Version="3.4.0" />
+    <PackageReference Include="Serilog.Extensions.Logging" Version="3.0.1" />
+    <PackageReference Include="Serilog.Sinks.Console" Version="3.1.1" />
+    <PackageReference Include="Serilog.Sinks.ElasticSearch" Version="8.4.1" />
+    <PackageReference Include="Serilog.Sinks.File" Version="4.1.0" />
+    <PackageReference Include="Serilog.Sinks.Seq" Version="4.0.0" />
+    <PackageReference Include="Swashbuckle.AspNetCore.ReDoc" Version="5.0.0" />
+    <PackageReference Include="Swashbuckle.AspNetCore.SwaggerGen" Version="5.0.0" />
+    <PackageReference Include="Swashbuckle.AspNetCore.SwaggerUI" Version="5.0.0" />
+    <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="6.7.1" />
+    <PackageReference Include="VaultSharp" Version="0.11.1002" />
+    <PackageReference Include="Microsoft.Extensions.Caching.StackExchangeRedis" Version="5.0.0" />
+    <PackageReference Include="Scrutor" Version="3.2.2" />
+    <PackageReference Include="Figgle" Version="0.4.0" />
+    <PackageReference Include="Open.Serialization.Json.Newtonsoft" Version="2.3.1" />
+    <PackageReference Include="Open.Serialization.Json.System" Version="2.3.1" />
+    <PackageReference Include="Open.Serialization.Json.Utf8Json" Version="2.3.1" />
+    <PackageReference Include="Microsoft.Extensions.Caching.Memory" Version="5.0.0" />
+    <PackageReference Include="RabbitMQ.Client" Version="6.2.1" />
+    <PackageReference Include="Polly" Version="7.2.1" />
+    <PackageReference Include="EventStore.Client" Version="20.6.1" />
+  </ItemGroup>
+  
+  <ItemGroup>
+    <Compile Remove="MicroPack\**" />
+  </ItemGroup>
+  
+  <ItemGroup>
+    <EmbeddedResource Remove="MicroPack\**" />
+  </ItemGroup>
+  
+  <ItemGroup>
+    <None Remove="MicroPack\**" />
+  </ItemGroup>
+</Project>
