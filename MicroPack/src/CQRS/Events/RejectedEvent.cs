@@ -17,5 +17,7 @@ namespace MicroPack.CQRS.Events
         public static IRejectedEvent For(string name)
             => new RejectedEvent($"There was an error when executing: " +
                                  $"{name}", $"{name}_error");
+
+        public string EventName { get; }
     }
 }

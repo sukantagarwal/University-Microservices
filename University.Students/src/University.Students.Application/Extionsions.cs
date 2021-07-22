@@ -8,12 +8,15 @@ namespace University.Students.Application
     public static class Extionsions
     {
         public static IServiceCollection AddApplication(this IServiceCollection services)
-            => services
+        {
+            services.AddScoped<StudentCreatedConsumer>();
+            return services
                 .AddCommandHandlers()
                 .AddEventHandlers()
                 .AddInMemoryCommandDispatcher()
                 .AddInMemoryEventDispatcher()
                 .AddQueryHandlers()
                 .AddInMemoryQueryDispatcher();
+        }
     }
 }

@@ -9,4 +9,9 @@ namespace MicroPack.Types
         public bool DisplayBanner { get; set; } = true;
         public bool DisplayVersion { get; set; } = true;
     }
+
+    public class OutboxOptions
+    {
+        public bool Enabled { get; set; }
+    }
 }

@@ -6,7 +6,7 @@ using University.Students.Application.Commands;
 namespace University.Students.Api.Controllers
 {
     [ApiController]
-    [Route("[controller]")]
+    [Route("api/[controller]")]
     public class StudentController : ControllerBase
     {
         private readonly ICommandDispatcher _commandDispatcher;
@@ -16,8 +16,8 @@ namespace University.Students.Api.Controllers
             _commandDispatcher = commandDispatcher;
         }
         
-        [HttpPost]
-        public async Task<ActionResult> Post(AddStudent command)
+        [HttpPost(nameof(Create))]
+        public async Task<ActionResult> Create(AddStudent command)
         {
             await _commandDispatcher.SendAsync(command);
             return Ok();

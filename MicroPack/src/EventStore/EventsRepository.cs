@@ -37,7 +37,9 @@ namespace MicroPack.EventStore
             var streamName = GetStreamName(aggregateRoot.Id);
 
             var firstEvent = aggregateRoot.Events.First();
-            var version = firstEvent.AggregateVersion - 1;
+            // var version = firstEvent.AggregateVersion - 1;
+            var version = -1;
+
 
             using var transaction = await connection.StartTransactionAsync(streamName, version);
 
@@ -45,7 +47,8 @@ namespace MicroPack.EventStore
             {
                 foreach (var @event in aggregateRoot.Events)
                 {
-                    var eventData = Map(@event);
+                   // var eventData = Map(@event);
+                    var eventData = Map(null);
                     await transaction.WriteAsync(eventData);
                 }
 

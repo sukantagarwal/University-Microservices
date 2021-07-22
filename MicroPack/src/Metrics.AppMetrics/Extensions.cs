@@ -6,7 +6,6 @@ using App.Metrics.AspNetCore.Endpoints;
 using App.Metrics.AspNetCore.Health.Endpoints;
 using App.Metrics.AspNetCore.Tracking;
 using App.Metrics.Formatters.Prometheus;
-using MicroPack.Consul;
 using MicroPack.Metrics.AppMetrics.Builders;
 using MicroPack.Types;
 using Microsoft.AspNetCore.Builder;

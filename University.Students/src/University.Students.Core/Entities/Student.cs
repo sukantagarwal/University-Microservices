@@ -23,14 +23,14 @@ namespace University.Students.Core.Entities
              FirstName = firstName;
              LastName = lastName;
              EnrollmentDate = enrollmentDate;
-             
-            AddEvent(new StudentCreatedDomainEvent(Id));
+             AddEvent(new StudentCreatedDomainEvent(this));
         }
 
         public static Student Create(string firstName, string lastName, DateTime enrollmentDate)
         {
           //  CheckRule(new StudentMustBeUniqueRule(firstName, lastName, studentUniquenessChecker));
-            return new Student(Guid.NewGuid() , firstName, lastName, enrollmentDate);
+            var student = new Student(Guid.NewGuid() , firstName, lastName, enrollmentDate);
+            return student;
         }
         public void Edit(string firstName, string lastName, DateTime enrollmentDate)
         {

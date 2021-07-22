@@ -2,6 +2,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using MicroPack;
+using MicroPack.Types;
 using MicroPack.WebApi;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -32,7 +34,8 @@ namespace University.Students.Api
         {
 
             services.AddControllers().AddNewtonsoftJson();
-            services.AddTransient<IStudentDbContext>(provider => provider.GetService<StudentDbContext>());
+            var outboxOptions = services.GetOptions<OutboxOptions>("outbox");
+            services.AddSingleton(outboxOptions);
             services
                 .AddApplication()
                 .AddInfrastructure();

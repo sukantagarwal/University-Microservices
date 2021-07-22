@@ -9,8 +9,8 @@ namespace MicroPack.Types
     public abstract class BaseAggregateRoot<TA, TKey> : BaseEntity<TKey>, IAggregateRoot<TKey>
         where TA : class, IAggregateRoot<TKey>
     {
-        private readonly Queue<IDomainEvent<TKey>> _events = new Queue<IDomainEvent<TKey>>();
-        public IEnumerable<IDomainEvent<TKey>> Events => _events.ToImmutableArray();
+        private readonly Queue<IDomainEvent> _events = new Queue<IDomainEvent>();
+        public IEnumerable<IDomainEvent> Events => _events.ToImmutableArray();
       //  public long Version { get; set; }
 
         protected BaseAggregateRoot() { }
@@ -24,7 +24,7 @@ namespace MicroPack.Types
             _events.Clear();
         }
 
-        protected void AddEvent(IDomainEvent<TKey> @event)
+        protected void AddEvent(IDomainEvent @event)
         {
             _events.Enqueue(@event);
            

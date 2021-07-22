@@ -5,7 +5,7 @@ namespace MicroPack.Types
     public interface IAggregateRoot<out TKey> : IIdentifiable<TKey>
     {
      //   long Version { get; }
-        IEnumerable<IDomainEvent<TKey>> Events { get; }
+        IEnumerable<IDomainEvent> Events { get; }
         void ClearEvents();
     }
 }

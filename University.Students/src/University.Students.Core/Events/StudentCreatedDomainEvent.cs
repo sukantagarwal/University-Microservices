@@ -1,18 +1,22 @@
 ﻿using System;
 using MicroPack.Types;
+using University.Students.Core.Entities;
 
 namespace University.Students.Core.Events
 {
-    public class StudentCreatedDomainEvent : IDomainEvent<Guid>
+    public class StudentCreatedDomainEvent : IDomainEvent
     {
-        public Guid StudentId { get; }
-        public StudentCreatedDomainEvent(Guid studentId)
+        public StudentCreatedDomainEvent(Student student)
         {
-            StudentId = studentId;
+            Id = student.Id;
+            EnrollmentDate = student.EnrollmentDate;
+            FirstName = student.FirstName;
+            LastName = student.LastName;
         }
 
-        public long AggregateVersion { get; }
-        public Guid AggregateId { get; }
-        public DateTime Timestamp { get; }
+        public Guid Id { get; }
+        public string FirstName { get;}
+        public string LastName { get;}
+        public DateTime EnrollmentDate { get;}
     }
 }

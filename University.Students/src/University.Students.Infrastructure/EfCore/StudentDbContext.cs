@@ -12,16 +12,21 @@ namespace University.Students.Infrastructure.EfCore
     {
          private IDbContextTransaction _currentTransaction;
 
-        public StudentDbContext(DbContextOptions<StudentDbContext> options) : base(options)
-        {
-        }
+         public StudentDbContext(DbContextOptions<StudentDbContext> options) : base(options)
+         {
+         }
         
-        public DbSet<Student> Students { get; set; }
+         public DbSet<Student> Students { get; set; }
 
-        protected override void OnModelCreating(ModelBuilder builder)
-        {
-            builder.ApplyConfiguration(new StudentTypeConfiguration());
-        }
+         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+         {
+             optionsBuilder.UseSqlServer("Data Source=.\\sqlexpress;Initial Catalog=Student;Integrated Security=True;MultipleActiveResultSets=True;Connect Timeout=30");
+         }
+        
+         protected override void OnModelCreating(ModelBuilder builder)
+         {
+             builder.ApplyConfiguration(new StudentTypeConfiguration());
+         }
         
         public async Task BeginTransactionAsync()
         {
