@@ -8,10 +8,6 @@ namespace University.Students.Core.Entities
         public Guid CourseId { get; set; }
         public Guid StudentId { get; set; }
         public Grade? Grade { get; set; }
-        // protected override void Apply(IDomainEvent<Guid> @event)
-        // {
-        //     throw new NotImplementedException();
-        // }
     }
     
     public enum Grade
