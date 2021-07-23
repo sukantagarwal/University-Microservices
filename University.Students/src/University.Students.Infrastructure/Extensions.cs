@@ -38,37 +38,42 @@ namespace University.Students.Infrastructure
             var configuration = services.BuildServiceProvider().GetService<IConfiguration>();
             var connectionString = configuration!.GetSection("connectionString").Value;
 
+            var outboxOptions = services.GetOptions<OutboxOptions>("outbox");
+            services.AddSingleton(outboxOptions);
+
+            services.AddDbContext<StudentDbContext>(options => options.UseSqlServer(connectionString));
+            
+            services.AddTransient<IStudentDbContext>(provider => provider.GetService<StudentDbContext>());
+
+            services.AddDbContext<StudentDbContext>();
+
             services.AddTransient<IMessageBroker, MessageBroker>();
             services.AddTransient<IEventMapper, EventMapper>();
             services.AddTransient<IEventProcessor, EventProcessor>();
 
-            // services.AddDbContext<StudentDbContext>(options =>
-            //     options.UseSqlServer(connectionString));
-            //
-            services.AddTransient<IStudentDbContext>(provider => provider.GetService<StudentDbContext>());
-            
-            services.AddDbContext<StudentDbContext>();
-            
+
             services.AddCap(x =>
             {
-                x.UseEntityFramework<StudentDbContext>(); 
+                x.UseEntityFramework<StudentDbContext>();
 
                 x.UseSqlServer(connectionString);
 
-                x.UseRabbitMQ("localhost");
+                x.UseRabbitMQ(r =>
+                {
+                    r.HostName = "localhost";
+                    r.ExchangeName = "students";
+                });
 
                 x.FailedRetryCount = 5;
             });
-            
+
             return services;
         }
 
         public static IApplicationBuilder UseInfrastructure(this IApplicationBuilder app)
         {
             //app.UseInitializers();
-            //  .UseErrorHandler();
-            //app.UseRabbitMq().SubscribeCommand<AddStudent>();
-
+            //  .Use
             return app;
         }
     }

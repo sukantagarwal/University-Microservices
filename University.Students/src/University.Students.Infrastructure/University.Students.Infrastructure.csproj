@@ -6,10 +6,10 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Migrations" />
+    <ProjectReference Include="..\University.Students.Application\University.Students.Application.csproj" />
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\University.Students.Application\University.Students.Application.csproj" />
+    <Folder Include="Migrations" />
   </ItemGroup>
 </Project>

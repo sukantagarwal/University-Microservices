@@ -34,8 +34,6 @@ namespace University.Students.Api
         {
 
             services.AddControllers().AddNewtonsoftJson();
-            var outboxOptions = services.GetOptions<OutboxOptions>("outbox");
-            services.AddSingleton(outboxOptions);
             services
                 .AddApplication()
                 .AddInfrastructure();

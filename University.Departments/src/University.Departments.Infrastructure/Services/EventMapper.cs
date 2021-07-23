@@ -4,6 +4,7 @@ using MicroPack.CQRS.Events;
 using MicroPack.Types;
 using University.Departments.Application.Events;
 using University.Departments.Application.Services;
+using University.Departments.Core.Events;
 
 namespace University.Departments.Infrastructure.Services
 {
@@ -15,7 +16,7 @@ namespace University.Departments.Infrastructure.Services
         public IEvent Map(IDomainEvent @event)
             => @event switch
             {
-                StudentCreatedDomainEvent e => new DepartmentCreated(e.Id),
+                DepartmentCreatedDomainEvent e => new DepartmentCreated(e.Id),
                 _ => null
             };
     }

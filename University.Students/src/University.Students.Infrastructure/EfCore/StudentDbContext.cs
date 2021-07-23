@@ -17,11 +17,7 @@ namespace University.Students.Infrastructure.EfCore
          }
         
          public DbSet<Student> Students { get; set; }
-
-         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-         {
-             optionsBuilder.UseSqlServer("Data Source=.\\sqlexpress;Initial Catalog=Student;Integrated Security=True;MultipleActiveResultSets=True;Connect Timeout=30");
-         }
+         
         
          protected override void OnModelCreating(ModelBuilder builder)
          {

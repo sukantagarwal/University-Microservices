@@ -11,6 +11,5 @@ namespace University.Students.Application
         Task BeginTransactionAsync();
         Task CommitTransactionAsync(CancellationToken cancellationToken);
         Task RollbackTransaction(CancellationToken cancellationToken);
-
     }
 }
