@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using MicroPack.Types;
 
 namespace University.Cources.Core.Entities
 {
-    public class Department
+    public class Department: BaseAggregateRoot<Department, Guid>
     {
-        public int Id { get; set; }
 
         public string Name { get; set; }
         
@@ -13,9 +13,8 @@ namespace University.Cources.Core.Entities
         
         public DateTime StartDate { get; set; }
 
-        public int? InstructorId { get; set; }
+        public int? AdministratorId { get; set; }
         
-        public Instructor Administrator { get; set; }
         public ICollection<Course> Courses { get; set; }
     }
 }

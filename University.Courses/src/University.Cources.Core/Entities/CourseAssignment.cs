@@ -1,10 +1,11 @@
-﻿namespace University.Cources.Core.Entities
+﻿using System;
+using MicroPack.Types;
+
+namespace University.Cources.Core.Entities
 {
-    public class CourseAssignment
+    public class CourseAssignment: BaseAggregateRoot<CourseAssignment, Guid>
     {
         public int InstructorId { get; set; }
         public int CourseId { get; set; }
-        public Instructor Instructor { get; set; }
-        public Course Course { get; set; }
     }
 }

@@ -5,6 +5,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\..\MicroPack\src\MicroPack.csproj" />
     <ProjectReference Include="..\University.Instructors.Core\University.Instructors.Core.csproj" />
   </ItemGroup>
 

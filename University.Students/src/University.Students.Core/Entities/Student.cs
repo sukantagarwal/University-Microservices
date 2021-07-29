@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Collections.Immutable;
 using MicroPack.Types;
 using University.Students.Core.Events;
-using University.Students.Core.ValueObjects;
 
 namespace University.Students.Core.Entities
 {

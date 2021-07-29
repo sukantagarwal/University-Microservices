@@ -9,6 +9,6 @@ namespace University.Departments.Application.Commands
         public string Name { get; init; }
         public decimal Budget { get; init; }
         public DateTime StartDate { get; init; }
-        public Instructor Administrator { get; init; }
+        public Guid? AdministratorId { get; init; }
     }
 }

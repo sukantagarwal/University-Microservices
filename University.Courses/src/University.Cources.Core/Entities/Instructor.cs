@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using MicroPack.Types;
 
 namespace University.Cources.Core.Entities
 {
-    public class Instructor
+    public class Instructor: BaseAggregateRoot<Instructor, Guid>
     {
-        public int Id { get; set; }
         public string LastName { get; set; }
         public string FirstMidName { get; set; }
         public DateTime HireDate { get; set; }

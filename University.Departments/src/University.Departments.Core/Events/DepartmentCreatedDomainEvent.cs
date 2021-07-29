@@ -1,6 +1,5 @@
 ﻿using System;
 using MicroPack.Types;
-using University.Departments.Core.Entities;
 
 namespace University.Departments.Core.Events
 {
@@ -15,7 +14,7 @@ namespace University.Departments.Core.Events
             InstructorId = instructorId;
         }
 
-        public Guid Id { get; set; }
+        public Guid Id { get; }
         public string Name { get;}
         public decimal Budget { get;}
         public DateTime StartDate { get;}

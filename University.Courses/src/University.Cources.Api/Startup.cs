@@ -11,6 +11,8 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
+using University.Cources.Application;
+using University.Cources.Infrastructure;
 
 namespace University.Cources.Api
 {
@@ -27,7 +29,10 @@ namespace University.Cources.Api
         public void ConfigureServices(IServiceCollection services)
         {
 
-            services.AddControllers();
+            services.AddControllers().AddNewtonsoftJson();
+            services.AddApplication()
+                .AddInfrastructure();
+            
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "University.Cources.Api", Version = "v1" });

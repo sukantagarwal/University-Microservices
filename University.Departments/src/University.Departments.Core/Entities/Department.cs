@@ -34,9 +34,9 @@ namespace University.Departments.Core.Entities
             
             AddEvent(new DepartmentCreatedDomainEvent(id, name, budget, startDate, administratorId));
         }
-        public static Department Create(string name, decimal budget, DateTime startDate, Instructor administrator)
+        public static Department Create(string name, decimal budget, DateTime startDate, Guid? administratorId)
         {
-            return new Department(Guid.NewGuid(), name, budget ,startDate, administrator?.Id);
+            return new Department(Guid.NewGuid(), name, budget ,startDate, administratorId);
         }
     }
 }

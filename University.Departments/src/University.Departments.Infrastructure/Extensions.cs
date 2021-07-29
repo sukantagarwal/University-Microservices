@@ -6,7 +6,6 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using University.Departments.Application;
 using University.Departments.Application.Services;
-using University.Departments.Core.Entities;
 using University.Departments.Infrastructure.EfCore;
 using University.Departments.Infrastructure.Services;
 
@@ -54,10 +53,6 @@ namespace University.Departments.Infrastructure
 
         public static IApplicationBuilder UseInfrastructure(this IApplicationBuilder app)
         {
-            //app.UseInitializers();
-            //  .UseErrorHandler();
-            //app.UseRabbitMq().SubscribeCommand<AddStudent>();
-
             return app;
         }
     }

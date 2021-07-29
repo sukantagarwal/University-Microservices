@@ -19,7 +19,7 @@ namespace University.Departments.Application.Commands.Handlers
 
         public async Task HandleAsync(AddDepartment command, CancellationToken token)
         {
-            var department = Department.Create(command.Name, command.Budget, command.StartDate, command.Administrator);
+            var department = Department.Create(command.Name, command.Budget, command.StartDate, command?.AdministratorId);
             await _departmentDbContext.Departments.AddAsync(department, token);
 
             await _eventProcessor.ProcessAsync(department.Events);
