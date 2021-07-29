@@ -8,19 +8,19 @@ namespace University.Instructors.Core.Entities
 {
     public class Instructor: BaseAggregateRoot<Instructor, Guid>
     {
-        private OfficeLocation _officeLocation;
         
-        public string LastName { get; set; }
-        public string FirstName { get; set; }
-        public DateTime HireDate { get; set; }
+        public string LastName { get; private set; }
+        public string FirstName { get; private set; }
+        public DateTime HireDate { get; private set; }
         public string FullName => LastName + " " + FirstName;
-        public OfficeLocation OfficeLocation => _officeLocation;  
+        public OfficeLocation OfficeLocation { get; private set; }
 
-        public ICollection<CourseAssignment> CourseAssignments { get; private set; } = new List<CourseAssignment>();
-        public ICollection<Department> Departments { get; private set; }
+        public Instructor()
+        {
+            
+        }
         
-        
-        private Instructor(Guid id, string firstName, string lastName, DateTime hireDate, string address,string postalCode,string city)
+        private Instructor(Guid id, string firstName, string lastName, DateTime hireDate, OfficeLocation officeLocation)
         {
             //CheckRule(new DepartmentMustHavePositiveBudgetRule(budget));
             
@@ -28,14 +28,14 @@ namespace University.Instructors.Core.Entities
             FirstName = firstName;
             LastName = lastName;
             HireDate = hireDate;
-            _officeLocation = OfficeLocation.CreateNew(address, postalCode, city);
+            OfficeLocation = OfficeLocation.CreateNew(officeLocation.Address, officeLocation.PostalCode, officeLocation.City);
 
-            AddEvent(new InstructorCreatedDomainEvent(id, lastName, firstName, hireDate, _officeLocation));
+            AddEvent(new InstructorCreatedDomainEvent(id, lastName, firstName, hireDate, OfficeLocation));
         }
 
-        public static Instructor Create(string firstName, string lastName, DateTime hireDate, string address, string postalCode, string city)
+        public static Instructor Create(string firstName, string lastName, DateTime hireDate, OfficeLocation officeLocation)
         {
-            return new Instructor(Guid.NewGuid(), firstName, lastName, hireDate, address, postalCode, city);
+            return new Instructor(Guid.NewGuid(), firstName, lastName, hireDate, officeLocation);
         }
 
     }

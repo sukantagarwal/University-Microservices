@@ -5,14 +5,12 @@ using University.Cources.Core.Events;
 
 namespace University.Cources.Core.Entities
 {
-    public class Course: BaseAggregateRoot<Department, Guid>
+    public class Course: BaseAggregateRoot<Course, Guid>
     {
         public string Title { get; set; }
         public int Credits { get; set; }
         public Guid DepartmentId { get; set; }
 
-        public ICollection<Enrollment> Enrollments { get; set; }
-        public ICollection<CourseAssignment> CourseAssignments { get; set; }
 
         private Course(Guid id, Guid departmentId, string title,int credits)
         {

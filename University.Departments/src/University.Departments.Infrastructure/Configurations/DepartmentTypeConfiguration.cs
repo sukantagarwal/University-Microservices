@@ -27,26 +27,7 @@ namespace University.Departments.Infrastructure.Configurations
             
             builder.Property(r => r.LastModified)
                 .IsRequired();
-            
-            builder.OwnsMany(r => r.Courses, b =>
-            {
-                b.ToTable("Courses", "dbo")
-                    .HasKey(ur => ur.Id);
 
-                b.Property(ur => ur.DepartmentId)
-                    .IsRequired()
-                    .UsePropertyAccessMode(PropertyAccessMode.Property);
-
-                
-                b.Property(ur => ur.Credits);
-                b.Property(ur => ur.Title);
-                
-            });
-
-            var navCources = builder.Metadata.FindNavigation(nameof(Department.Courses));
-            navCources.SetPropertyAccessMode(PropertyAccessMode.Field);
-            
-    
         }
     }
 }

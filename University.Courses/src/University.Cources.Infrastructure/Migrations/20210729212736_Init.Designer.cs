@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
-using University.Departments.Infrastructure.EfCore;
+using University.Cources.Infrastructure.EfCore;
 
-namespace University.Departments.Infrastructure.Migrations
+namespace University.Cources.Infrastructure.Migrations
 {
-    [DbContext(typeof(DepartmentDbContext))]
-    partial class DepartmentDbContextModelSnapshot : ModelSnapshot
+    [DbContext(typeof(CourseDbContext))]
+    [Migration("20210729212736_Init")]
+    partial class Init
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -19,16 +21,16 @@ namespace University.Departments.Infrastructure.Migrations
                 .HasAnnotation("ProductVersion", "5.0.4")
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-            modelBuilder.Entity("University.Departments.Core.Entities.Department", b =>
+            modelBuilder.Entity("University.Cources.Core.Entities.Course", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<decimal>("Budget")
-                        .HasColumnType("decimal(18,2)");
+                    b.Property<int>("Credits")
+                        .HasColumnType("int");
 
-                    b.Property<Guid?>("InstructorId")
+                    b.Property<Guid>("DepartmentId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<bool>("IsDeleted")
@@ -37,17 +39,14 @@ namespace University.Departments.Infrastructure.Migrations
                     b.Property<DateTime>("LastModified")
                         .HasColumnType("datetime2");
 
-                    b.Property<string>("Name")
+                    b.Property<string>("Title")
                         .IsRequired()
-                        .HasMaxLength(250)
-                        .HasColumnType("nvarchar(250)");
-
-                    b.Property<DateTime>("StartDate")
-                        .HasColumnType("datetime2");
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
 
                     b.HasKey("Id");
 
-                    b.ToTable("Departments", "dbo");
+                    b.ToTable("Courses", "dbo");
                 });
 #pragma warning restore 612, 618
         }

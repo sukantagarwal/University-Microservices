@@ -16,9 +16,6 @@ namespace University.Departments.Core.Entities
 
         public Guid? InstructorId { get; set; }
         
-        private readonly List<Course> _courses = new List<Course>();
-        public IReadOnlyCollection<Course> Courses => _courses.ToImmutableArray();
-
         public Department()
         {
             

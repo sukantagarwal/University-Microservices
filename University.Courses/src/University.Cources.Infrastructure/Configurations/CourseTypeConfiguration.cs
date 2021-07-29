@@ -11,7 +11,24 @@ namespace University.Cources.Infrastructure.Configurations
             builder.ToTable("Courses", "dbo");
 
             builder.HasKey(r => r.Id);
+            
+            builder.Property(r => r.Credits)
+                .IsRequired();
 
+            builder.Property(r => r.Title)
+                .HasMaxLength(50)
+                .IsRequired();
+            
+            builder.Property(r => r.DepartmentId);
+            
+            // builder.Property(r => r.Version)
+            //     .IsRequired();
+            
+            builder.Property(r => r.IsDeleted)
+                .IsRequired();
+            
+            builder.Property(r => r.LastModified)
+                .IsRequired();
         }
     }
 }
