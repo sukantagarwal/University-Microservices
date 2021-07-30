@@ -11,6 +11,21 @@ namespace University.Instructors.Infrastructure.Migrations
                 name: "dbo");
 
             migrationBuilder.CreateTable(
+                name: "CourseAssignments",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    InstructorId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    CourseId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    LastModified = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    IsDeleted = table.Column<bool>(type: "bit", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_CourseAssignments", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Instructors",
                 schema: "dbo",
                 columns: table => new
@@ -33,6 +48,9 @@ namespace University.Instructors.Infrastructure.Migrations
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.DropTable(
+                name: "CourseAssignments");
+
             migrationBuilder.DropTable(
                 name: "Instructors",
                 schema: "dbo");

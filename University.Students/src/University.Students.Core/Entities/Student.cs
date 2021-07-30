@@ -13,15 +13,12 @@ namespace University.Students.Core.Entities
         public DateTime EnrollmentDate { get; set; }
         public string FullName => LastName + ", " + FirstName;
         
-        private readonly List<Enrollment> _enrollments = new List<Enrollment>();
-        public IReadOnlyCollection<Enrollment> Enrollments => _enrollments.ToImmutableArray();
         
         private Student(Guid id, string firstName, string lastName, DateTime enrollmentDate): base(id)
         {
              Id = id;
              FirstName = firstName;
              LastName = lastName;
-             EnrollmentDate = enrollmentDate;
              AddEvent(new StudentCreatedDomainEvent(this));
         }
 

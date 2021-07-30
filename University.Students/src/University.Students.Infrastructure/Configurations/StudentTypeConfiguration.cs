@@ -20,6 +20,9 @@ namespace University.Students.Infrastructure.Configurations
                 .HasMaxLength(250)
                 .IsRequired();
             
+            builder.Property(r => r.EnrollmentDate)
+                .IsRequired();
+            
             // builder.Property(r => r.Version)
             //     .IsRequired();
             
