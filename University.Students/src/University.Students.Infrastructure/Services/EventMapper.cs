@@ -17,6 +17,7 @@ namespace University.Students.Infrastructure.Services
             => @event switch
             {
                 StudentCreatedDomainEvent e => new StudentCreated(e.Id),
+                EnrollmentCreatedDomainEvent e => new EnrollmentCreated(e.Id, e.StudentId, e.CourseId),
                 _ => null
             };
     }

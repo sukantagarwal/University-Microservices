@@ -19,6 +19,34 @@ namespace University.Students.Infrastructure.Migrations
                 .HasAnnotation("ProductVersion", "5.0.4")
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
+            modelBuilder.Entity("University.Students.Core.Entities.Enrollment", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("CourseId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<int?>("Grade")
+                        .HasColumnType("int");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<DateTime>("LastModified")
+                        .HasColumnType("datetime2");
+
+                    b.Property<Guid>("StudentId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("StudentId");
+
+                    b.ToTable("Enrollments", "dbo");
+                });
+
             modelBuilder.Entity("University.Students.Core.Entities.Student", b =>
                 {
                     b.Property<Guid>("Id")
@@ -49,38 +77,17 @@ namespace University.Students.Infrastructure.Migrations
                     b.ToTable("Students", "dbo");
                 });
 
+            modelBuilder.Entity("University.Students.Core.Entities.Enrollment", b =>
+                {
+                    b.HasOne("University.Students.Core.Entities.Student", null)
+                        .WithMany("Enrollments")
+                        .HasForeignKey("StudentId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
             modelBuilder.Entity("University.Students.Core.Entities.Student", b =>
                 {
-                    b.OwnsMany("University.Students.Core.Entities.Enrollment", "Enrollments", b1 =>
-                        {
-                            b1.Property<Guid>("Id")
-                                .HasColumnType("uniqueidentifier");
-
-                            b1.Property<Guid>("CourseId")
-                                .HasColumnType("uniqueidentifier");
-
-                            b1.Property<int?>("Grade")
-                                .HasColumnType("int");
-
-                            b1.Property<bool>("IsDeleted")
-                                .HasColumnType("bit");
-
-                            b1.Property<DateTime>("LastModified")
-                                .HasColumnType("datetime2");
-
-                            b1.Property<Guid>("StudentId")
-                                .HasColumnType("uniqueidentifier");
-
-                            b1.HasKey("Id");
-
-                            b1.HasIndex("StudentId");
-
-                            b1.ToTable("Enrollments", "dbo");
-
-                            b1.WithOwner()
-                                .HasForeignKey("StudentId");
-                        });
-
                     b.Navigation("Enrollments");
                 });
 #pragma warning restore 612, 618

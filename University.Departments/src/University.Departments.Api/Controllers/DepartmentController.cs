@@ -17,7 +17,14 @@ namespace University.Departments.Api.Controllers
         }
         
         [HttpPost(nameof(Create))]
-        public async Task<ActionResult> Create(AddDepartment command)
+        public async Task<ActionResult> Create(AddDepartmentCommand command)
+        {
+            await _commandDispatcher.SendAsync(command);
+            return Ok();
+        }
+        
+        [HttpPost(nameof(AssignAdministrator))]
+        public async Task<ActionResult> AssignAdministrator(AssignAdministratorCommand command)
         {
             await _commandDispatcher.SendAsync(command);
             return Ok();

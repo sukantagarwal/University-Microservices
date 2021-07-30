@@ -35,5 +35,11 @@ namespace University.Departments.Core.Entities
         {
             return new Department(Guid.NewGuid(), name, budget ,startDate, administratorId);
         }
+        
+        public void AssignAdministrator(Guid administratorId)
+        {
+            InstructorId = administratorId;
+            AddEvent(new AdministratorAssignedDomainEvent(administratorId, Id));
+        }
     }
 }

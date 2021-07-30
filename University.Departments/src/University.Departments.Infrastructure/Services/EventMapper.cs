@@ -17,6 +17,7 @@ namespace University.Departments.Infrastructure.Services
             => @event switch
             {
                 DepartmentCreatedDomainEvent e => new DepartmentCreated(e.Id),
+                AdministratorAssignedDomainEvent e => new AdministratorAssigned(e.InstructorId, e.DepartmentId),
                 _ => null
             };
     }

@@ -4,21 +4,21 @@ using University.Students.Core.Entities;
 
 namespace University.Students.Infrastructure.Configurations
 {
-    public class StudentTypeConfiguration: IEntityTypeConfiguration<Student>
+    public class EnrollmentTypeConfiguration: IEntityTypeConfiguration<Enrollment>
     {
-        public void Configure(EntityTypeBuilder<Student> builder)
+        public void Configure(EntityTypeBuilder<Enrollment> builder)
         {
-            builder.ToTable("Students", "dbo");
+            builder.ToTable("Enrollments", "dbo");
 
             builder.HasKey(r => r.Id);
 
-            builder.Property(r => r.FirstName)
-                .HasMaxLength(250)
+            builder.Property(r => r.StudentId)
                 .IsRequired();
 
-            builder.Property(r => r.LastName)
-                .HasMaxLength(250)
+            builder.Property(r => r.CourseId)
                 .IsRequired();
+            
+            builder.Property(r => r.Grade);
             
             // builder.Property(r => r.Version)
             //     .IsRequired();

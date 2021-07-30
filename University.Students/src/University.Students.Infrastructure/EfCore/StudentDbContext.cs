@@ -17,11 +17,12 @@ namespace University.Students.Infrastructure.EfCore
          }
         
          public DbSet<Student> Students { get; set; }
+         public DbSet<Enrollment> Enrollments { get; set; }
          
-        
          protected override void OnModelCreating(ModelBuilder builder)
          {
              builder.ApplyConfiguration(new StudentTypeConfiguration());
+             builder.ApplyConfiguration(new EnrollmentTypeConfiguration());
          }
         
         public async Task BeginTransactionAsync()

@@ -1,12 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using MicroPack.CQRS.Commands;
 
 namespace University.Students.Application.Commands
 {
     [Contract]
-    public class AddStudent : ICommand
+    public class AddStudentCommand : ICommand
     {
         public string LastName { get; init; }
 

@@ -31,38 +31,5 @@ namespace University.Students.Core.Entities
             var student = new Student(Guid.NewGuid() , firstName, lastName, enrollmentDate);
             return student;
         }
-        public void Edit(string firstName, string lastName, DateTime enrollmentDate)
-        {
-            // _personName = new PersonName(firstName, lastName);
-            // _enrollmentDate = enrollmentDate;
-            //
-            // AddEvent(new StudentEditedDomainEvent(Id,_personName.First,_personName.Last,enrollmentDate));
-        }
-        
-        
-        // public void EnrollToCourse(Guid courseId)
-        // {
-        //     //CheckRule(new CannotEnrollStudentTwiceToTheSameCourseRule(Id, courseId, _enrollments));          
-        //     _enrollments.Add(Enrollment.CreateNew(Id, courseId));
-        // }
-        // public void AddGrade(Guid courseId,Grade grade)
-        // {
-        //     //CheckRule(new CannotAddGradeToUnenrolledStudentRule(Id, courseId, _enrollments));
-        //    // CheckRule(new CannotChangeGradeRule(Id, courseId, _enrollments));
-        //     _enrollments.SingleOrDefault(e => e.CourseId == courseId && e.StudentId == Id).AddGrade(grade);
-        // }
-        // public void SoftDelete()
-        // {
-        //     _isDeleted = true;
-        //     foreach (var enrollment in _enrollments)
-        //     {
-        //         enrollment.SoftDelete();
-        //     }
-        // // }
-        //
-        // protected override void Apply(IDomainEvent<Guid> @event)
-        // {
-        //     throw new NotImplementedException();
-        // }
     }
 }
