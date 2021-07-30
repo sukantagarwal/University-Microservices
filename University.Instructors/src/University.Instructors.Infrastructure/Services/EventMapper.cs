@@ -17,6 +17,7 @@ namespace University.Instructors.Infrastructure.Services
             => @event switch
             {
                 InstructorCreatedDomainEvent e => new InstructorCreated(e.Id),
+                AssignmentCourseCreatedDomainEvent e => new AssignmentCourseCreated(e.Id, e.InstructorId, e.CourseId),
                 _ => null
             };
     }

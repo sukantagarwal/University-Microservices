@@ -1,23 +1,23 @@
 ﻿using System.Threading.Tasks;
 using MicroPack.CQRS.Commands;
 using Microsoft.AspNetCore.Mvc;
-using University.Instructors.Application.Commands;
+using University.Students.Application.Commands;
 
-namespace University.Instructors.Api.Controllers
+namespace University.Students.Api.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
-    public class InstructorController: ControllerBase
+    public class EnrollmentController: ControllerBase
     {
         private readonly ICommandDispatcher _commandDispatcher;
 
-        public InstructorController(ICommandDispatcher commandDispatcher)
+        public EnrollmentController(ICommandDispatcher commandDispatcher)
         {
             _commandDispatcher = commandDispatcher;
         }
         
         [HttpPost(nameof(Create))]
-        public async Task<ActionResult> Create(AddInstructorCommand command)
+        public async Task<ActionResult> Create(AddEnrollmentCommand command)
         {
             await _commandDispatcher.SendAsync(command);
             return Ok();

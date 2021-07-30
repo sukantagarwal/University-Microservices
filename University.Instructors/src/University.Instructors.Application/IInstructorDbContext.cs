@@ -8,6 +8,7 @@ namespace University.Instructors.Application
     public interface IInstructorDbContext
     {
         DbSet<Instructor> Instructors { get; set; }
+        DbSet<CourseAssignment> CourseAssignments { get; set; }
         Task BeginTransactionAsync();
         Task CommitTransactionAsync(CancellationToken cancellationToken);
         Task RollbackTransaction(CancellationToken cancellationToken);

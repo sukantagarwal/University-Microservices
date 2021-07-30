@@ -17,8 +17,8 @@ namespace University.Instructors.Infrastructure.EfCore
         }
         
         public DbSet<Instructor> Instructors { get; set; }
+        public DbSet<CourseAssignment> CourseAssignments { get; set; }
 
-        
         protected override void OnModelCreating(ModelBuilder builder)
         {
             builder.ApplyConfiguration(new InstructorTypeConfiguration());
