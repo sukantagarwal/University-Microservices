@@ -4,7 +4,7 @@ using University.Cources.Core.Entities;
 
 namespace University.Cources.Application.Commands
 {
-    public class AddCourse: ICommand
+    public class AddCourseCommand: ICommand
     {
         public string Title { get; init; }
         public int Credits { get; init; }

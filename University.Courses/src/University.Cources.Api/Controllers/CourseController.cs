@@ -17,7 +17,7 @@ namespace University.Cources.Api.Controllers
         }
         
         [HttpPost(nameof(Create))]
-        public async Task<ActionResult> Create(AddCourse command)
+        public async Task<ActionResult> Create(AddCourseCommand command)
         {
             await _commandDispatcher.SendAsync(command);
             return Ok();

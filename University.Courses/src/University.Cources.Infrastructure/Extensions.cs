@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using University.Cources.Application;
 using University.Cources.Application.Services;
 using University.Cources.Infrastructure.EfCore;
 using University.Cources.Infrastructure.Services;
@@ -24,9 +25,7 @@ namespace University.Cources.Infrastructure
             var outboxOptions = services.GetOptions<OutboxOptions>("outbox");
             services.AddSingleton(outboxOptions);
             
-            services.AddTransient<CourseDbContext>(provider => provider.GetService<CourseDbContext>());
-            
-            services.AddDbContext<CourseDbContext>();
+            services.AddTransient<ICourseDbContext>(provider => provider.GetService<CourseDbContext>());
             
             services.AddTransient<IMessageBroker, MessageBroker>();
             services.AddTransient<IEventMapper, EventMapper>();
