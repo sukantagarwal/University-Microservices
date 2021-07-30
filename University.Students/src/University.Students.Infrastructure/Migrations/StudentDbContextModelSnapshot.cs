@@ -42,8 +42,6 @@ namespace University.Students.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("StudentId");
-
                     b.ToTable("Enrollments", "dbo");
                 });
 
@@ -75,20 +73,6 @@ namespace University.Students.Infrastructure.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Students", "dbo");
-                });
-
-            modelBuilder.Entity("University.Students.Core.Entities.Enrollment", b =>
-                {
-                    b.HasOne("University.Students.Core.Entities.Student", null)
-                        .WithMany("Enrollments")
-                        .HasForeignKey("StudentId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
-            modelBuilder.Entity("University.Students.Core.Entities.Student", b =>
-                {
-                    b.Navigation("Enrollments");
                 });
 #pragma warning restore 612, 618
         }
