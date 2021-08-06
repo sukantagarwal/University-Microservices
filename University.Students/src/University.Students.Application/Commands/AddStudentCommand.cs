@@ -1,9 +1,8 @@
 ﻿using System;
-using MicroPack.CQRS.Commands;
+using BuildingBlocks.CQRS.Commands;
 
 namespace University.Students.Application.Commands
 {
-    [Contract]
     public class AddStudentCommand : ICommand
     {
         public string LastName { get; init; }

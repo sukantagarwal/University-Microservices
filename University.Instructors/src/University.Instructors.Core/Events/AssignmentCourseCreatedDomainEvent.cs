@@ -1,5 +1,5 @@
 ﻿using System;
-using MicroPack.Types;
+using BuildingBlocks.Types;
 using University.Instructors.Core.Entities;
 
 namespace University.Instructors.Core.Events

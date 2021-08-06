@@ -1,9 +1,8 @@
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
+using BuildingBlocks.CQRS.Events;
+using BuildingBlocks.Types;
 using DotNetCore.CAP;
-using MicroPack.CQRS.Events;
-using MicroPack.Types;
 using Microsoft.Extensions.Logging;
 using University.Departments.Application.Services;
 using University.Departments.Infrastructure.EfCore;
@@ -25,9 +24,7 @@ namespace University.Departments.Infrastructure.Services
             _studentDbContext = studentDbContext;
             _outbox = outbox;
         }
-
-        public Task PublishAsync(params IEvent[] events) => PublishAsync(events?.AsEnumerable());
-
+        
         public async Task PublishAsync(IEnumerable<IEvent> events)
         {
             if (events is null)

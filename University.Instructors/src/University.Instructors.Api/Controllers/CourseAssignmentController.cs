@@ -1,5 +1,5 @@
 ﻿using System.Threading.Tasks;
-using MicroPack.CQRS.Commands;
+using BuildingBlocks.CQRS.Commands;
 using Microsoft.AspNetCore.Mvc;
 using University.Instructors.Application.Commands;
 

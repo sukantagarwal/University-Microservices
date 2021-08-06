@@ -2,13 +2,10 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using BuildingBlocks.CQRS.Events;
+using BuildingBlocks.Types;
 using DotNetCore.CAP;
-using MicroPack.CQRS.Events;
-using MicroPack.Types;
 using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Options;
-using University.Students.Application;
-using University.Students.Application.Commands;
 using University.Students.Application.Services;
 using University.Students.Infrastructure.EfCore;
 

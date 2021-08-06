@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
-using MicroPack.Types;
+using BuildingBlocks.Types;
 using University.Departments.Core.Events;
 
 namespace University.Departments.Core.Entities

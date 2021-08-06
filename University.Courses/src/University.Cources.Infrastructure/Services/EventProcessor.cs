@@ -1,8 +1,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using MicroPack.CQRS.Events;
-using MicroPack.Types;
+using BuildingBlocks.CQRS.Events;
+using BuildingBlocks.Types;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using University.Cources.Application.Services;
@@ -43,6 +43,7 @@ namespace University.Cources.Infrastructure.Services
             _logger.LogTrace("Processing integration events...");
             await _messageBroker.PublishAsync(integrationEvents);
         }
+        
 
         private async Task<List<IEvent>> HandleDomainEvents(IEnumerable<IDomainEvent> events)
         {

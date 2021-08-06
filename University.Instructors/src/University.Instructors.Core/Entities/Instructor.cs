@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using MicroPack.Types;
+using BuildingBlocks.Types;
 using University.Instructors.Core.Events;
 using University.Instructors.Core.ValueObjects;
 

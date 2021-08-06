@@ -6,9 +6,9 @@ namespace University.Cources.Application.Commands.Validators
     {
         public AddCourseCommandValidator()
         {
-            RuleFor(x => x.Title).NotNull().NotEmpty();
-            RuleFor(x => x.Credits).GreaterThan(0);
-            RuleFor(x => x.DepartmentId).NotNull();
+            RuleFor(x => x.Title).NotNull().NotEmpty().WithMessage("title not be empty!");
+            RuleFor(x => x.Credits).GreaterThan(0).WithMessage("credits must greater than 0!");
+            RuleFor(x => x.DepartmentId).NotNull().WithMessage("departmentId not be null! ");
         }
     }
 }

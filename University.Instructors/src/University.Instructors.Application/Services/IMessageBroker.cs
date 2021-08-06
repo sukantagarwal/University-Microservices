@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using MicroPack.CQRS.Events;
+using BuildingBlocks.CQRS.Events;
 
 namespace University.Instructors.Application.Services
 {

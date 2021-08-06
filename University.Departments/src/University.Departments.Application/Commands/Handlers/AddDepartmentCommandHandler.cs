@@ -1,6 +1,6 @@
 ﻿using System.Threading;
 using System.Threading.Tasks;
-using MicroPack.CQRS.Commands;
+using BuildingBlocks.CQRS.Commands;
 using University.Departments.Application.Services;
 using University.Departments.Core.Entities;
 

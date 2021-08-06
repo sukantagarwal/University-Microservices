@@ -1,5 +1,6 @@
-﻿using MicroPack;
-using MicroPack.Types;
+﻿using BuildingBlocks;
+using BuildingBlocks.Exception;
+using BuildingBlocks.Types;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -18,6 +19,9 @@ namespace University.Departments.Infrastructure
             var configuration = services.BuildServiceProvider().GetService<IConfiguration>();
             var connectionString = configuration!.GetSection("connectionString").Value;
 
+            services.AddErrorHandler<ExceptionToResponseMapper>();
+            services.AddTransient<IExceptionToMessageMapper,ExceptionToMessageMapper>();
+            
             services.AddDbContext<DepartmentDbContext>(options =>
                 options.UseSqlServer(connectionString));
             
@@ -53,6 +57,7 @@ namespace University.Departments.Infrastructure
 
         public static IApplicationBuilder UseInfrastructure(this IApplicationBuilder app)
         {
+            app.UseErrorHandler();
             return app;
         }
     }

@@ -1,9 +1,14 @@
-﻿namespace University.Cources.Application.Exceptions
+﻿using System;
+
+namespace University.Cources.Application.Exceptions
 {
     public class DuplicateTitleException: AppException
     {
-        public DuplicateTitleException() : base("title already exist!")
+        public Guid Id { get; }
+
+        public DuplicateTitleException(Guid id) : base("title already exist!")
         {
+            Id = id;
         }
     }
 }

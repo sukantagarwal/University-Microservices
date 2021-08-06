@@ -48,6 +48,8 @@ namespace University.Departments.Api
                 app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "University.Departments.Api v1"));
             }
 
+            app.UseInfrastructure();
+            
             app.UseHttpsRedirection();
 
             app.UseRouting();

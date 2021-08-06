@@ -1,6 +1,6 @@
 using System.Collections.Generic;
-using MicroPack.CQRS.Events;
-using MicroPack.Types;
+using BuildingBlocks.CQRS.Events;
+using BuildingBlocks.Types;
 
 namespace University.Departments.Application.Services
 {

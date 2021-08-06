@@ -9,7 +9,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\..\MicroPack\src\MicroPack.csproj" />
     <ProjectReference Include="..\University.Cources.Application\University.Cources.Application.csproj" />
     <ProjectReference Include="..\University.Cources.Infrastructure\University.Cources.Infrastructure.csproj" />
   </ItemGroup>

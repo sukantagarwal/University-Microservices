@@ -1,5 +1,5 @@
 ﻿using System;
-using MicroPack.CQRS.Events;
+using BuildingBlocks.CQRS.Events;
 
 namespace University.Instructors.Application.Events
 {

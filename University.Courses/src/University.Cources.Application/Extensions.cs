@@ -1,6 +1,6 @@
-﻿using MicroPack.CQRS.Commands;
-using MicroPack.CQRS.Events;
-using MicroPack.CQRS.Queries;
+﻿using BuildingBlocks.CQRS.Commands;
+using BuildingBlocks.CQRS.Events;
+using BuildingBlocks.CQRS.Queries;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace University.Cources.Application

@@ -1,5 +1,5 @@
 ﻿using System;
-using MicroPack.Types;
+using BuildingBlocks.Types;
 
 namespace University.Cources.Core.Events
 {
@@ -8,9 +8,9 @@ namespace University.Cources.Core.Events
         public Guid Id { get;}
         public string Title { get;}
         public int Credits { get;}
-        public Guid DepartmentId { get;}
+        public Guid? DepartmentId { get;}
 
-        public CourseCreatedDomainEvent(Guid id, int credits, string title, Guid departmentId)
+        public CourseCreatedDomainEvent(Guid id, int credits, string title, Guid? departmentId)
         {
             Id = id;
             Title = title;

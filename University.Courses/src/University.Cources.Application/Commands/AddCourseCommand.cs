@@ -1,13 +1,21 @@
 ﻿using System;
-using MicroPack.CQRS.Commands;
-using University.Cources.Core.Entities;
+using BuildingBlocks.CQRS.Commands;
 
 namespace University.Cources.Application.Commands
 {
     public class AddCourseCommand: ICommand
     {
-        public string Title { get; init; }
-        public int Credits { get; init; }
-        public Guid DepartmentId { get; init; }
+        public Guid Id { get;}
+        public string Title { get;}
+        public int Credits { get;}
+        public Guid? DepartmentId { get;}
+
+        public AddCourseCommand(Guid id, string title, int credits, Guid departmentId)
+        {
+            Id = id == Guid.Empty ? Guid.NewGuid() : id;
+            Title = title;
+            Credits = credits;
+            DepartmentId = departmentId;
+        }
     }
 }

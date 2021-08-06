@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using System.Linq;
-using MicroPack.CQRS.Events;
-using MicroPack.Types;
+using BuildingBlocks.CQRS.Events;
+using BuildingBlocks.Types;
 using University.Departments.Application.Events;
 using University.Departments.Application.Services;
 using University.Departments.Core.Events;

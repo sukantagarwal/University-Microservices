@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using MicroPack.Types;
+using BuildingBlocks.Types;
 
 namespace University.Instructors.Application.Services
 {

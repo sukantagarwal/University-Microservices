@@ -1,7 +1,7 @@
 ﻿using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using MicroPack.CQRS.Commands;
+using BuildingBlocks.CQRS.Commands;
 using University.Cources.Application.Exceptions;
 using University.Cources.Application.Services;
 using University.Cources.Core.Entities;
@@ -23,10 +23,10 @@ namespace University.Cources.Application.Commands.Handlers
             var duplicateTitle = _courseDbContext.Courses.Any(x=>x.Title == command.Title);
             if (duplicateTitle)
             {
-                throw new DuplicateTitleException();
+                throw new DuplicateTitleException(command.Id);
             }
             
-            var course = Course.Create(command.DepartmentId, command.Title, command.Credits);
+            var course = Course.Create(command.Id, command.DepartmentId, command.Title, command.Credits);
             await _courseDbContext.Courses.AddAsync(course, token);
             
             await _eventProcessor.ProcessAsync(course.Events);

@@ -1,6 +1,5 @@
 ﻿using System;
-using MicroPack.CQRS.Commands;
-using University.Departments.Core.Entities;
+using BuildingBlocks.CQRS.Commands;
 
 namespace University.Departments.Application.Commands
 {

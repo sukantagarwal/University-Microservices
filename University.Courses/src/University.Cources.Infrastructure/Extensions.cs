@@ -1,9 +1,14 @@
-﻿using MicroPack;
-using MicroPack.Types;
+﻿using System.Text.Encodings.Web;
+using System.Text.Unicode;
+using BuildingBlocks;
+using BuildingBlocks.Exception;
+using BuildingBlocks.Types;
+using DotNetCore.CAP.Messages;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Serilog;
 using University.Cources.Application;
 using University.Cources.Application.Services;
 using University.Cources.Infrastructure.EfCore;
@@ -18,6 +23,9 @@ namespace University.Cources.Infrastructure
             var configuration = services.BuildServiceProvider().GetService<IConfiguration>();
             var connectionString = configuration!.GetSection("connectionString").Value;
 
+            services.AddErrorHandler<ExceptionToResponseMapper>();
+            services.AddTransient<IExceptionToMessageMapper,ExceptionToMessageMapper>();
+            
             services.AddDbContext<CourseDbContext>(options =>
                 options.UseSqlServer(connectionString));
             
@@ -44,6 +52,12 @@ namespace University.Cources.Infrastructure
                 });
             
                 x.FailedRetryCount = 5;
+                x.FailedThresholdCallback = failed =>
+                {
+                    Log.Error($@"A message of type {failed.MessageType} failed after executing {x.FailedRetryCount} several times, 
+                        requiring manual troubleshooting. Message name: {failed.Message.GetName()}");
+                };
+                x.JsonSerializerOptions.Encoder = JavaScriptEncoder.Create(UnicodeRanges.All);
             });
             
             return services;
@@ -51,6 +65,8 @@ namespace University.Cources.Infrastructure
 
         public static IApplicationBuilder UseInfrastructure(this IApplicationBuilder app)
         {
+            app.UseErrorHandler();
+
             return app;
         }
     }

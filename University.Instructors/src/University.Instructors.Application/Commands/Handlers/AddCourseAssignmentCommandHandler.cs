@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Threading;
 using System.Threading.Tasks;
-using MicroPack.CQRS.Commands;
+using BuildingBlocks.CQRS.Commands;
 using University.Instructors.Application.Services;
 using University.Instructors.Core.Entities;
 

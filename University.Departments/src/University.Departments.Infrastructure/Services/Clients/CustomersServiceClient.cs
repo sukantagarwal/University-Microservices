@@ -1,8 +1,8 @@
 // using System;
 // using System.Threading.Tasks;
-// using MicroPack.Http;
-// using MicroPack.Vault;
-// using MicroPack.WebApi.Security;
+// using BuildingBlocks.Http;
+// using BuildingBlocks.Vault;
+// using BuildingBlocks.WebApi.Security;
 //
 // namespace University.Students.Infrastructure.Services.Clients
 // {

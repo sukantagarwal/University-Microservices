@@ -1,5 +1,5 @@
 ﻿using System;
-using MicroPack.CQRS.Commands;
+using BuildingBlocks.CQRS.Commands;
 using University.Students.Core.Entities;
 
 namespace University.Students.Application.Commands

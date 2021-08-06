@@ -1,33 +1,18 @@
-﻿using System;
-using System.Collections.Generic;
-using DotNetCore.CAP;
-using DotNetCore.CAP.Internal;
-using MicroPack;
-using MicroPack.CQRS.Commands;
-using MicroPack.CQRS.Events;
-using MicroPack.EventStore;
-using MicroPack.Http;
-using MicroPack.MessageBrokers.CQRS;
-using MicroPack.MessageBrokers.Outbox;
-using MicroPack.MessageBrokers.Outbox.Mongo;
-using MicroPack.MessageBrokers.RabbitMQ;
-using MicroPack.Metrics.AppMetrics;
-using MicroPack.Mongo;
-using MicroPack.Security;
-using MicroPack.Tracing.Jaeger;
-using MicroPack.Types;
-using MicroPack.WebApi;
-using MicroPack.WebApi.Security;
+﻿using System.Text.Encodings.Web;
+using System.Text.Unicode;
+using BuildingBlocks;
+using BuildingBlocks.Exception;
+using BuildingBlocks.Types;
+using DotNetCore.CAP.Messages;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Serilog;
 using University.Students.Application;
-using University.Students.Application.Commands;
 using University.Students.Application.Services;
 using University.Students.Infrastructure.EfCore;
 using University.Students.Infrastructure.Services;
-using OutboxOptions = MicroPack.Types.OutboxOptions;
 
 namespace University.Students.Infrastructure
 {
@@ -40,6 +25,9 @@ namespace University.Students.Infrastructure
 
             var outboxOptions = services.GetOptions<OutboxOptions>("outbox");
             services.AddSingleton(outboxOptions);
+
+            services.AddErrorHandler<ExceptionToResponseMapper>();
+            services.AddTransient<IExceptionToMessageMapper, ExceptionToMessageMapper>();
 
             services.AddDbContext<StudentDbContext>(options => options.UseSqlServer(connectionString));
             
@@ -65,6 +53,12 @@ namespace University.Students.Infrastructure
                 });
 
                 x.FailedRetryCount = 5;
+                x.FailedThresholdCallback = failed =>
+                {
+                    Log.Error($@"A message of type {failed.MessageType} failed after executing {x.FailedRetryCount} several times, 
+                        requiring manual troubleshooting. Message name: {failed.Message.GetName()}");
+                };
+                x.JsonSerializerOptions.Encoder = JavaScriptEncoder.Create(UnicodeRanges.All);
             });
 
             return services;
@@ -72,8 +66,7 @@ namespace University.Students.Infrastructure
 
         public static IApplicationBuilder UseInfrastructure(this IApplicationBuilder app)
         {
-            //app.UseInitializers();
-            //  .Use
+            app.UseErrorHandler();
             return app;
         }
     }
