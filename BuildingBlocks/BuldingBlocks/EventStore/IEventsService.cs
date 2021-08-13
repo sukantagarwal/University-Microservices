@@ -3,7 +3,7 @@ using BuildingBlocks.Types;
 
 namespace BuildingBlocks.EventStore
 {
-    public interface IEventsService<TA, TKey> 
+    public interface IEventsService<TA, TKey>
         where TA : class, IAggregateRoot<TKey>
     {
         Task SaveAsync(TA aggregateRoot);

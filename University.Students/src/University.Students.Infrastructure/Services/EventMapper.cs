@@ -11,14 +11,18 @@ namespace University.Students.Infrastructure.Services
     internal sealed class EventMapper : IEventMapper
     {
         public IEnumerable<IEvent> MapAll(IEnumerable<IDomainEvent> events)
-            => events.Select(Map);
+        {
+            return events.Select(Map);
+        }
 
         public IEvent Map(IDomainEvent @event)
-            => @event switch
+        {
+            return @event switch
             {
                 StudentCreatedDomainEvent e => new StudentCreated(e.Id),
                 EnrollmentCreatedDomainEvent e => new EnrollmentCreated(e.Id, e.StudentId, e.CourseId),
                 _ => null
             };
+        }
     }
 }

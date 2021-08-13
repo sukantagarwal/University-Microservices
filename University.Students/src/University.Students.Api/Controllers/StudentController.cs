@@ -1,5 +1,6 @@
 ﻿using System.Threading.Tasks;
 using BuildingBlocks.CQRS.Commands;
+using BuildingBlocks.OpenTelemetry.Messaging;
 using Microsoft.AspNetCore.Mvc;
 using University.Students.Application.Commands;
 
@@ -15,7 +16,7 @@ namespace University.Students.Api.Controllers
         {
             _commandDispatcher = commandDispatcher;
         }
-        
+
         [HttpPost(nameof(Create))]
         public async Task<ActionResult> Create(AddStudentCommand command)
         {

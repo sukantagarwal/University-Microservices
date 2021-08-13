@@ -13,41 +13,37 @@ namespace University.Departments.Infrastructure.Services
     {
         private readonly ICapPublisher _capPublisher;
         private readonly ILogger<MessageBroker> _logger;
+        private readonly Options.OutboxOptions _outbox;
         private readonly DepartmentDbContext _studentDbContext;
-        private readonly OutboxOptions _outbox;
 
 
-        public MessageBroker(ICapPublisher capPublisher, ILogger<MessageBroker> logger, DepartmentDbContext studentDbContext, OutboxOptions outbox)
+        public MessageBroker(ICapPublisher capPublisher, ILogger<MessageBroker> logger,
+            DepartmentDbContext studentDbContext, Options.OutboxOptions outbox)
         {
             _capPublisher = capPublisher;
             _logger = logger;
             _studentDbContext = studentDbContext;
             _outbox = outbox;
         }
-        
+
         public async Task PublishAsync(IEnumerable<IEvent> events)
         {
-            if (events is null)
-            {
-                return;
-            }
-            
+            if (events is null) return;
+
             foreach (var @event in events)
             {
-                if (@event is null)
-                {
-                    continue;
-                }
-                
+                if (@event is null) continue;
+
                 if (_outbox.Enabled)
                 {
-                    using (var trans = _studentDbContext.Database.BeginTransaction(_capPublisher, autoCommit: true))
+                    using (var trans = _studentDbContext.Database.BeginTransaction(_capPublisher, true))
                     {
                         await _capPublisher.PublishAsync(@event.GetType().Name, @event);
                     }
+
                     continue;
                 }
-                
+
                 await _capPublisher.PublishAsync(@event.GetType().Name, @event);
             }
         }

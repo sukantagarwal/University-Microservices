@@ -5,13 +5,15 @@ using University.Students.Application.Events.Rejected;
 
 namespace University.Students.Infrastructure.Services
 {
-    public class ExceptionToMessageMapper: IExceptionToMessageMapper
+    public class ExceptionToMessageMapper : IExceptionToMessageMapper
     {
         public IRejectedEvent Map(Exception exception, object message)
-        => exception switch
+        {
+            return exception switch
             {
-            DuplicateException ex => new AddStudentRejected(ex.Id , ex.Message),
+                DuplicateException ex => new AddStudentRejected(ex.Id, ex.Message),
                 _ => null
             };
+        }
     }
 }

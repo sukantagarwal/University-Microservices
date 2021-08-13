@@ -4,7 +4,7 @@
     {
         public OfficeLocation CreateNew(string address, string postalCode, string city)
         {
-            return new OfficeLocation(address, postalCode, city);
+            return new(address, postalCode, city);
         }
     }
 }

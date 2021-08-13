@@ -3,13 +3,8 @@ using BuildingBlocks.Types;
 
 namespace University.Cources.Core.Events
 {
-    public class CourseCreatedDomainEvent: IDomainEvent
+    public class CourseCreatedDomainEvent : IDomainEvent
     {
-        public Guid Id { get;}
-        public string Title { get;}
-        public int Credits { get;}
-        public Guid? DepartmentId { get;}
-
         public CourseCreatedDomainEvent(Guid id, int credits, string title, Guid? departmentId)
         {
             Id = id;
@@ -17,5 +12,10 @@ namespace University.Cources.Core.Events
             Credits = credits;
             DepartmentId = departmentId;
         }
+
+        public Guid Id { get; }
+        public string Title { get; }
+        public int Credits { get; }
+        public Guid? DepartmentId { get; }
     }
 }

@@ -4,12 +4,14 @@ using BuildingBlocks.Exception;
 
 namespace University.Departments.Infrastructure.Services
 {
-    public class ExceptionToMessageMapper: IExceptionToMessageMapper
+    public class ExceptionToMessageMapper : IExceptionToMessageMapper
     {
         public IRejectedEvent Map(Exception exception, object message)
-        => exception switch
+        {
+            return exception switch
             {
-            _ => null
+                _ => null
             };
+        }
     }
 }

@@ -7,8 +7,8 @@ namespace BuildingBlocks.Types
     {
         public BaseEntity()
         {
-            
         }
+
         protected BaseEntity(TKey id)
         {
             Id = id;
@@ -16,22 +16,23 @@ namespace BuildingBlocks.Types
             IsDeleted = false;
         }
 
-        public TKey Id { get; protected set; }
         public DateTime LastModified { get; protected set; }
-        public bool IsDeleted { get; protected set; } 
+        public bool IsDeleted { get; protected set; }
 
-        
+        public TKey Id { get; protected set; }
+
+
         public override bool Equals(object obj)
         {
             var entity = obj as BaseEntity<TKey>;
             return entity != null &&
-                   this.GetType() == entity.GetType() &&
+                   GetType() == entity.GetType() &&
                    EqualityComparer<TKey>.Default.Equals(Id, entity.Id);
         }
 
         public override int GetHashCode()
         {
-            return HashCode.Combine(this.GetType(), Id);
+            return HashCode.Combine(GetType(), Id);
         }
 
         public static bool operator ==(BaseEntity<TKey> entity1, BaseEntity<TKey> entity2)

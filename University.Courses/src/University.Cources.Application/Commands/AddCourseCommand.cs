@@ -3,13 +3,8 @@ using BuildingBlocks.CQRS.Commands;
 
 namespace University.Cources.Application.Commands
 {
-    public class AddCourseCommand: ICommand
+    public class AddCourseCommand : ICommand
     {
-        public Guid Id { get;}
-        public string Title { get;}
-        public int Credits { get;}
-        public Guid? DepartmentId { get;}
-
         public AddCourseCommand(Guid id, string title, int credits, Guid departmentId)
         {
             Id = id == Guid.Empty ? Guid.NewGuid() : id;
@@ -17,5 +12,10 @@ namespace University.Cources.Application.Commands
             Credits = credits;
             DepartmentId = departmentId;
         }
+
+        public Guid Id { get; }
+        public string Title { get; }
+        public int Credits { get; }
+        public Guid? DepartmentId { get; }
     }
 }

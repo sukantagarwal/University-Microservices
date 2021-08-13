@@ -7,7 +7,7 @@ namespace University.Instructors.Api.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
-    public class CourseAssignmentController: ControllerBase
+    public class CourseAssignmentController : ControllerBase
     {
         private readonly ICommandDispatcher _commandDispatcher;
 
@@ -15,7 +15,7 @@ namespace University.Instructors.Api.Controllers
         {
             _commandDispatcher = commandDispatcher;
         }
-        
+
         [HttpPost(nameof(Create))]
         public async Task<ActionResult> Create(AddCourseAssignmentCommand command)
         {

@@ -11,10 +11,10 @@ namespace University.Instructors.Infrastructure.Services
 {
     internal sealed class EventProcessor : IEventProcessor
     {
-        private readonly IServiceScopeFactory _serviceScopeFactory;
         private readonly IEventMapper _eventMapper;
-        private readonly IMessageBroker _messageBroker;
         private readonly ILogger<IEventProcessor> _logger;
+        private readonly IMessageBroker _messageBroker;
+        private readonly IServiceScopeFactory _serviceScopeFactory;
 
         public EventProcessor(IServiceScopeFactory serviceScopeFactory, IEventMapper eventMapper,
             IMessageBroker messageBroker, ILogger<IEventProcessor> logger)
@@ -27,18 +27,11 @@ namespace University.Instructors.Infrastructure.Services
 
         public async Task ProcessAsync(IEnumerable<IDomainEvent> events)
         {
-            
-            if (events is null)
-            {
-                return;
-            }
+            if (events is null) return;
 
             _logger.LogTrace("Processing domain events...");
             var integrationEvents = await HandleDomainEvents(events);
-            if (!integrationEvents.Any())
-            {
-                return;
-            }
+            if (!integrationEvents.Any()) return;
 
             _logger.LogTrace("Processing integration events...");
             await _messageBroker.PublishAsync(integrationEvents);
@@ -54,16 +47,10 @@ namespace University.Instructors.Infrastructure.Services
                 _logger.LogTrace($"Handling domain event: {eventType.Name}");
                 var handlerType = typeof(IDomainEventHandler<>).MakeGenericType(eventType);
                 dynamic handlers = scope.ServiceProvider.GetServices(handlerType);
-                foreach (var handler in handlers)
-                {
-                    await handler.HandleAsync((dynamic) @event);
-                }
+                foreach (var handler in handlers) await handler.HandleAsync((dynamic) @event);
 
                 var integrationEvent = _eventMapper.Map(@event);
-                if (integrationEvent is null)
-                {
-                    continue;
-                }
+                if (integrationEvent is null) continue;
 
                 integrationEvents.Add(integrationEvent);
             }

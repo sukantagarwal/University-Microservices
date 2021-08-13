@@ -20,12 +20,8 @@ namespace University.Students.Application.Commands.Handlers
 
         public async Task HandleAsync(AddStudentCommand command, CancellationToken token)
         {
-             
-            if (command.FirstName == null)
-            {
-                throw new DuplicateException(Guid.Empty);
-            }
-            
+            if (command.FirstName == null) throw new DuplicateException(Guid.Empty);
+
             var student = Student.Create(command.FirstName, command.LastName, command.EnrollmentDate!.Value);
             await _studentDbContext.Students.AddAsync(student, token);
 

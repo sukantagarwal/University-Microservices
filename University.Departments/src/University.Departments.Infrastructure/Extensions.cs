@@ -20,38 +20,38 @@ namespace University.Departments.Infrastructure
             var connectionString = configuration!.GetSection("connectionString").Value;
 
             services.AddErrorHandler<ExceptionToResponseMapper>();
-            services.AddTransient<IExceptionToMessageMapper,ExceptionToMessageMapper>();
-            
+            services.AddTransient<IExceptionToMessageMapper, ExceptionToMessageMapper>();
+
             services.AddDbContext<DepartmentDbContext>(options =>
                 options.UseSqlServer(connectionString));
-            
-            
-            var outboxOptions = services.GetOptions<OutboxOptions>("outbox");
+
+
+            var outboxOptions = services.GetOptions<Options.OutboxOptions>("outbox");
             services.AddSingleton(outboxOptions);
-            
+
             services.AddTransient<IDepartmentDbContext>(provider => provider.GetService<DepartmentDbContext>());
-            
+
             services.AddDbContext<DepartmentDbContext>();
-            
+
             services.AddTransient<IMessageBroker, MessageBroker>();
             services.AddTransient<IEventMapper, EventMapper>();
             services.AddTransient<IEventProcessor, EventProcessor>();
-            
+
             services.AddCap(x =>
             {
-                x.UseEntityFramework<DepartmentDbContext>(); 
-            
+                x.UseEntityFramework<DepartmentDbContext>();
+
                 x.UseSqlServer(connectionString);
-            
-                x.UseRabbitMQ( r=>
+
+                x.UseRabbitMQ(r =>
                 {
                     r.HostName = "localhost";
                     r.ExchangeName = "departments";
                 });
-            
+
                 x.FailedRetryCount = 5;
             });
-            
+
             return services;
         }
 

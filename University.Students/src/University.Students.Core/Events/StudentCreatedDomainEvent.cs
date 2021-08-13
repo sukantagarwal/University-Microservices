@@ -15,8 +15,8 @@ namespace University.Students.Core.Events
         }
 
         public Guid Id { get; }
-        public string FirstName { get;}
-        public string LastName { get;}
-        public DateTime EnrollmentDate { get;}
+        public string FirstName { get; }
+        public string LastName { get; }
+        public DateTime EnrollmentDate { get; }
     }
 }

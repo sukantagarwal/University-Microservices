@@ -13,13 +13,14 @@ namespace University.Cources.Infrastructure.Services
     public class MessageBroker : IMessageBroker
     {
         private readonly ICapPublisher _capPublisher;
-        private readonly ILogger<MessageBroker> _logger;
-        private readonly CourseDbContext _studentDbContext;
-        private readonly OutboxOptions _outbox;
         private readonly IExceptionToMessageMapper _exceptionToMessageMapper;
+        private readonly ILogger<MessageBroker> _logger;
+        private readonly Options.OutboxOptions _outbox;
+        private readonly CourseDbContext _studentDbContext;
 
 
-        public MessageBroker(ICapPublisher capPublisher, ILogger<MessageBroker> logger, CourseDbContext studentDbContext, OutboxOptions outbox, IExceptionToMessageMapper exceptionToMessageMapper)
+        public MessageBroker(ICapPublisher capPublisher, ILogger<MessageBroker> logger,
+            CourseDbContext studentDbContext, Options.OutboxOptions outbox, IExceptionToMessageMapper exceptionToMessageMapper)
         {
             _capPublisher = capPublisher;
             _logger = logger;
@@ -27,30 +28,25 @@ namespace University.Cources.Infrastructure.Services
             _outbox = outbox;
             _exceptionToMessageMapper = exceptionToMessageMapper;
         }
-        
+
         public async Task PublishAsync(IEnumerable<IEvent> events)
         {
-            if (events is null)
-            {
-                return;
-            }
-            
+            if (events is null) return;
+
             foreach (var @event in events)
             {
-                if (@event is null)
-                {
-                    continue;
-                }
-                
+                if (@event is null) continue;
+
                 if (_outbox.Enabled)
                 {
-                    using (var trans = _studentDbContext.Database.BeginTransaction(_capPublisher, autoCommit: true))
+                    using (var trans = _studentDbContext.Database.BeginTransaction(_capPublisher, true))
                     {
                         await _capPublisher.PublishAsync(@event.GetType().Name, @event);
                     }
+
                     continue;
                 }
-                
+
                 await _capPublisher.PublishAsync(@event.GetType().Name, @event);
             }
         }

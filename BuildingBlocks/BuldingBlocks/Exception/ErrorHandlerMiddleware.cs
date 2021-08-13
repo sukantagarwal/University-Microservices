@@ -9,9 +9,9 @@ namespace BuildingBlocks.Exception
 {
     public class ErrorHandlerMiddleware : IMiddleware
     {
-        private readonly IExceptionToResponseMapper _exceptionToResponseMapper;
-        private readonly IExceptionToMessageMapper _exceptionToMessageMapper;
         private readonly ICapPublisher _capPublisher;
+        private readonly IExceptionToMessageMapper _exceptionToMessageMapper;
+        private readonly IExceptionToResponseMapper _exceptionToResponseMapper;
         private readonly ILogger<ErrorHandlerMiddleware> _logger;
 
         public ErrorHandlerMiddleware(IExceptionToResponseMapper exceptionToResponseMapper,

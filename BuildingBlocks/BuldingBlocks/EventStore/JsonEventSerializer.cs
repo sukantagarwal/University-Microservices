@@ -5,23 +5,25 @@ using System.Reflection;
 using System.Text;
 using BuildingBlocks.Types;
 using Newtonsoft.Json;
+using JsonSerializer = System.Text.Json.JsonSerializer;
 
 namespace BuildingBlocks.EventStore
 {
     public class JsonEventSerializer : IEventSerializer
     {
-        private readonly IEnumerable<Assembly> _assemblies;
-        
-        private static readonly JsonSerializerSettings JsonSerializerSettings = new JsonSerializerSettings()
+        private static readonly JsonSerializerSettings JsonSerializerSettings = new()
         {
             ConstructorHandling = ConstructorHandling.AllowNonPublicDefaultConstructor,
             ContractResolver = new PrivateSetterContractResolver()
         };
 
+        private readonly IEnumerable<Assembly> _assemblies;
+
         public JsonEventSerializer()
         {
             _assemblies = new[] {Assembly.GetExecutingAssembly()};
         }
+
         public JsonEventSerializer(IEnumerable<Assembly> assemblies)
         {
             _assemblies = assemblies ?? new[] {Assembly.GetExecutingAssembly()};
@@ -30,7 +32,7 @@ namespace BuildingBlocks.EventStore
         public IDomainEvent<TKey> Deserialize<TKey>(string type, byte[] data)
         {
             var jsonData = Encoding.UTF8.GetString(data);
-            return this.Deserialize<TKey>(type, jsonData);
+            return Deserialize<TKey>(type, jsonData);
         }
 
         public IDomainEvent<TKey> Deserialize<TKey>(string type, string data)
@@ -40,7 +42,7 @@ namespace BuildingBlocks.EventStore
                 .FirstOrDefault(t => t != null) ?? Type.GetType(type);
             if (null == eventType)
                 throw new ArgumentOutOfRangeException(nameof(type), $"invalid event type: {type}");
-            
+
             var result = JsonConvert.DeserializeObject(data, eventType, JsonSerializerSettings);
 
             return (IDomainEvent<TKey>) result;
@@ -48,7 +50,7 @@ namespace BuildingBlocks.EventStore
 
         public byte[] Serialize<TKey>(IDomainEvent<TKey> @event)
         {
-            var json = System.Text.Json.JsonSerializer.Serialize((dynamic)@event);
+            var json = JsonSerializer.Serialize((dynamic) @event);
             var data = Encoding.UTF8.GetBytes(json);
             return data;
         }

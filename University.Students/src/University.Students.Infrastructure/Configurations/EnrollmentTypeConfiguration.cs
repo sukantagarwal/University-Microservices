@@ -4,7 +4,7 @@ using University.Students.Core.Entities;
 
 namespace University.Students.Infrastructure.Configurations
 {
-    public class EnrollmentTypeConfiguration: IEntityTypeConfiguration<Enrollment>
+    public class EnrollmentTypeConfiguration : IEntityTypeConfiguration<Enrollment>
     {
         public void Configure(EntityTypeBuilder<Enrollment> builder)
         {
@@ -17,15 +17,15 @@ namespace University.Students.Infrastructure.Configurations
 
             builder.Property(r => r.CourseId)
                 .IsRequired();
-            
+
             builder.Property(r => r.Grade);
-            
+
             // builder.Property(r => r.Version)
             //     .IsRequired();
-            
+
             builder.Property(r => r.IsDeleted)
                 .IsRequired();
-            
+
             builder.Property(r => r.LastModified)
                 .IsRequired();
         }

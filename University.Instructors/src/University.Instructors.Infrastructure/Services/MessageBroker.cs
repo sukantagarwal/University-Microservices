@@ -1,9 +1,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using DotNetCore.CAP;
 using BuildingBlocks.CQRS.Events;
 using BuildingBlocks.Types;
+using DotNetCore.CAP;
 using Microsoft.Extensions.Logging;
 using University.Instructors.Application.Services;
 using University.Instructors.Infrastructure.EfCore;
@@ -14,11 +14,12 @@ namespace University.Instructors.Infrastructure.Services
     {
         private readonly ICapPublisher _capPublisher;
         private readonly ILogger<MessageBroker> _logger;
+        private readonly Options.OutboxOptions _outbox;
         private readonly InstructorDbContext _studentDbContext;
-        private readonly OutboxOptions _outbox;
 
 
-        public MessageBroker(ICapPublisher capPublisher, ILogger<MessageBroker> logger, InstructorDbContext studentDbContext, OutboxOptions outbox)
+        public MessageBroker(ICapPublisher capPublisher, ILogger<MessageBroker> logger,
+            InstructorDbContext studentDbContext, Options.OutboxOptions outbox)
         {
             _capPublisher = capPublisher;
             _logger = logger;
@@ -26,31 +27,29 @@ namespace University.Instructors.Infrastructure.Services
             _outbox = outbox;
         }
 
-        public Task PublishAsync(params IEvent[] events) => PublishAsync(events?.AsEnumerable());
+        public Task PublishAsync(params IEvent[] events)
+        {
+            return PublishAsync(events?.AsEnumerable());
+        }
 
         public async Task PublishAsync(IEnumerable<IEvent> events)
         {
-            if (events is null)
-            {
-                return;
-            }
-            
+            if (events is null) return;
+
             foreach (var @event in events)
             {
-                if (@event is null)
-                {
-                    continue;
-                }
-                
+                if (@event is null) continue;
+
                 if (_outbox.Enabled)
                 {
-                    using (var trans = _studentDbContext.Database.BeginTransaction(_capPublisher, autoCommit: true))
+                    using (var trans = _studentDbContext.Database.BeginTransaction(_capPublisher, true))
                     {
                         await _capPublisher.PublishAsync(@event.GetType().Name, @event);
                     }
+
                     continue;
                 }
-                
+
                 await _capPublisher.PublishAsync(@event.GetType().Name, @event);
             }
         }

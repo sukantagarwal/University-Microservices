@@ -4,9 +4,6 @@ namespace BuildingBlocks.CQRS.Events
 {
     public class RejectedEvent : IRejectedEvent
     {
-        public string Reason { get; }
-        public string Code { get; }
-
         [JsonConstructor]
         public RejectedEvent(string reason, string code)
         {
@@ -14,10 +11,15 @@ namespace BuildingBlocks.CQRS.Events
             Code = code;
         }
 
-        public static IRejectedEvent For(string name)
-            => new RejectedEvent($"There was an error when executing: " +
-                                 $"{name}", $"{name}_error");
+        public string Code { get; }
 
         public string EventName { get; }
+        public string Reason { get; }
+
+        public static IRejectedEvent For(string name)
+        {
+            return new RejectedEvent("There was an error when executing: " +
+                                     $"{name}", $"{name}_error");
+        }
     }
 }

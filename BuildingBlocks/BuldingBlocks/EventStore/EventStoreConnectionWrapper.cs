@@ -7,8 +7,8 @@ namespace BuildingBlocks.EventStore
 {
     public class EventStoreConnectionWrapper : IEventStoreConnectionWrapper, IDisposable
     {
-        private readonly Lazy<Task<IEventStoreConnection>> _lazyConnection;
         private readonly Uri _connString;
+        private readonly Lazy<Task<IEventStoreConnection>> _lazyConnection;
         private readonly ILogger<EventStoreConnectionWrapper> _logger;
 
         public EventStoreConnectionWrapper(Uri connString, ILogger<EventStoreConnectionWrapper> logger)
@@ -29,13 +29,26 @@ namespace BuildingBlocks.EventStore
             });
         }
 
+        public void Dispose()
+        {
+            if (!_lazyConnection.IsValueCreated)
+                return;
+
+            _lazyConnection.Value.Result.Dispose();
+        }
+
+        public Task<IEventStoreConnection> GetConnectionAsync()
+        {
+            return _lazyConnection.Value;
+        }
+
         // TODO: I'm not sure this is really the right approach.
         private IEventStoreConnection SetupConnection()
         {
             var settings = ConnectionSettings.Create()
-                 .EnableVerboseLogging()
-                 .UseConsoleLogger()
-                 .DisableTls() // https://github.com/EventStore/EventStore/issues/2547
+                .EnableVerboseLogging()
+                .UseConsoleLogger()
+                .DisableTls() // https://github.com/EventStore/EventStore/issues/2547
                 .Build();
             var connection = EventStoreConnection.Create(settings, _connString);
 
@@ -48,7 +61,7 @@ namespace BuildingBlocks.EventStore
             };
             connection.Disconnected += async (s, e) =>
             {
-                _logger.LogWarning($"The Eventstore connection has dropped. Trying to reconnect...");
+                _logger.LogWarning("The Eventstore connection has dropped. Trying to reconnect...");
                 connection = SetupConnection();
                 await connection.ConnectAsync();
             };
@@ -59,19 +72,6 @@ namespace BuildingBlocks.EventStore
                 await connection.ConnectAsync();
             };
             return connection;
-        }
-
-        public Task<IEventStoreConnection> GetConnectionAsync()
-        {
-            return _lazyConnection.Value;
-        }
-
-        public void Dispose()
-        {
-            if (!_lazyConnection.IsValueCreated)
-                return;
-
-            _lazyConnection.Value.Result.Dispose();
         }
     }
 }

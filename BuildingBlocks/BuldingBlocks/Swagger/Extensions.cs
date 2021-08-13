@@ -10,18 +10,16 @@ namespace BuildingBlocks.Swagger
         private const string SectionName = "swagger";
         private const string RegistryName = "docs.swagger";
 
-        public static IServiceCollection AddSwaggerDocs(this IServiceCollection serviceCollection, string sectionName = SectionName)
+        public static IServiceCollection AddSwaggerDocs(this IServiceCollection serviceCollection,
+            string sectionName = SectionName)
         {
-            if (string.IsNullOrWhiteSpace(sectionName))
-            {
-                sectionName = SectionName;
-            }
-            
+            if (string.IsNullOrWhiteSpace(sectionName)) sectionName = SectionName;
+
             var options = serviceCollection.GetOptions<SwaggerOptions>(sectionName);
             return serviceCollection.AddSwaggerDocs(options);
         }
-        
-        public static IServiceCollection AddSwaggerDocs(this IServiceCollection services, 
+
+        public static IServiceCollection AddSwaggerDocs(this IServiceCollection services,
             Func<ISwaggerOptionsBuilder, ISwaggerOptionsBuilder> buildOptions)
         {
             var options = buildOptions(new SwaggerOptionsBuilder()).Build();
@@ -33,9 +31,8 @@ namespace BuildingBlocks.Swagger
             services.AddSingleton(options);
             services.AddSwaggerGen(c =>
             {
-                c.SwaggerDoc(options.Name, new OpenApiInfo{Title = options.Title, Version = options.Version});
+                c.SwaggerDoc(options.Name, new OpenApiInfo {Title = options.Title, Version = options.Version});
                 if (options.IncludeSecurity)
-                {
                     c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
                     {
                         Description =
@@ -44,7 +41,6 @@ namespace BuildingBlocks.Swagger
                         In = ParameterLocation.Header,
                         Type = SecuritySchemeType.ApiKey
                     });
-                }
             });
 
             return services;
@@ -53,10 +49,7 @@ namespace BuildingBlocks.Swagger
         public static IApplicationBuilder UseSwaggerDocs(this IApplicationBuilder builder)
         {
             var options = builder.ApplicationServices.GetService<SwaggerOptions>();
-            if (!options.Enabled)
-            {
-                return builder;
-            }
+            if (!options.Enabled) return builder;
 
             var routePrefix = string.IsNullOrWhiteSpace(options.RoutePrefix) ? "swagger" : options.RoutePrefix;
 

@@ -7,11 +7,6 @@ namespace BuildingBlocks.CQRS.Queries
 {
     public class PagedResult<T> : PagedResultBase
     {
-        public IEnumerable<T> Items { get; }
-
-        public bool IsEmpty => Items is null || !Items.Any();
-        public bool IsNotEmpty => !IsEmpty;
-
         protected PagedResult()
         {
             Items = Enumerable.Empty<T>();
@@ -21,23 +16,34 @@ namespace BuildingBlocks.CQRS.Queries
         protected PagedResult(IEnumerable<T> items,
             int currentPage, int resultsPerPage,
             int totalPages, long totalResults) :
-                base(currentPage, resultsPerPage, totalPages, totalResults)
+            base(currentPage, resultsPerPage, totalPages, totalResults)
         {
             Items = items;
         }
 
+        public IEnumerable<T> Items { get; }
+
+        public bool IsEmpty => Items is null || !Items.Any();
+        public bool IsNotEmpty => !IsEmpty;
+
+        public static PagedResult<T> Empty => new();
+
         public static PagedResult<T> Create(IEnumerable<T> items,
             int currentPage, int resultsPerPage,
             int totalPages, long totalResults)
-            => new PagedResult<T>(items, currentPage, resultsPerPage, totalPages, totalResults);
+        {
+            return new(items, currentPage, resultsPerPage, totalPages, totalResults);
+        }
 
         public static PagedResult<T> From(PagedResultBase result, IEnumerable<T> items)
-            => new PagedResult<T>(items, result.CurrentPage, result.ResultsPerPage,
+        {
+            return new(items, result.CurrentPage, result.ResultsPerPage,
                 result.TotalPages, result.TotalResults);
-
-        public static PagedResult<T> Empty => new PagedResult<T>();
+        }
 
         public PagedResult<U> Map<U>(Func<T, U> map)
-            => PagedResult<U>.From(this, Items.Select(map));
+        {
+            return PagedResult<U>.From(this, Items.Select(map));
+        }
     }
 }

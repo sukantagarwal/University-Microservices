@@ -2,7 +2,6 @@
 using System.Linq;
 using System.Threading.Tasks;
 using BuildingBlocks.Types;
-using Microsoft.EntityFrameworkCore.Internal;
 
 namespace BuildingBlocks.EventStore
 {

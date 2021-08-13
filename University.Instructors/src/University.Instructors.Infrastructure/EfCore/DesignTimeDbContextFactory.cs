@@ -9,7 +9,8 @@ namespace University.Instructors.Infrastructure.EfCore
         {
             var builder = new DbContextOptionsBuilder<InstructorDbContext>();
 
-            builder.UseSqlServer("Data Source=.\\sqlexpress;Initial Catalog=Instructor;Integrated Security=True;MultipleActiveResultSets=True;Connect Timeout=30");
+            builder.UseSqlServer(
+                "Data Source=.\\sqlexpress;Initial Catalog=Instructor;Integrated Security=True;MultipleActiveResultSets=True;Connect Timeout=30");
             return new InstructorDbContext(builder.Options);
         }
     }

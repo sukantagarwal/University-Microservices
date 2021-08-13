@@ -2,6 +2,8 @@
 using System.Text.Unicode;
 using BuildingBlocks;
 using BuildingBlocks.Exception;
+using BuildingBlocks.OpenTelemetry;
+using BuildingBlocks.OpenTelemetry.Messaging;
 using BuildingBlocks.Types;
 using DotNetCore.CAP.Messages;
 using Microsoft.AspNetCore.Builder;
@@ -21,16 +23,19 @@ namespace University.Students.Infrastructure
         public static IServiceCollection AddInfrastructure(this IServiceCollection services)
         {
             var configuration = services.BuildServiceProvider().GetService<IConfiguration>();
-            var connectionString = configuration!.GetSection("connectionString").Value;
+            var connectionString = configuration!.GetSection("ConnectionString").Value;
 
-            var outboxOptions = services.GetOptions<OutboxOptions>("outbox");
+            var outboxOptions = services.GetOptions<Options.OutboxOptions>("Outbox");
             services.AddSingleton(outboxOptions);
+
+            var rabbitMqOptions = services.GetOptions<Options.RabbitMqOptions>("RabbitMq");
+            services.AddSingleton(rabbitMqOptions);
 
             services.AddErrorHandler<ExceptionToResponseMapper>();
             services.AddTransient<IExceptionToMessageMapper, ExceptionToMessageMapper>();
 
             services.AddDbContext<StudentDbContext>(options => options.UseSqlServer(connectionString));
-            
+
             services.AddTransient<IStudentDbContext>(provider => provider.GetService<StudentDbContext>());
 
             services.AddDbContext<StudentDbContext>();
@@ -40,6 +45,8 @@ namespace University.Students.Infrastructure
             services.AddTransient<IEventProcessor, EventProcessor>();
 
 
+            //services.AddTransient<Test>();
+
             services.AddCap(x =>
             {
                 x.UseEntityFramework<StudentDbContext>();
@@ -48,19 +55,22 @@ namespace University.Students.Infrastructure
 
                 x.UseRabbitMQ(r =>
                 {
-                    r.HostName = "localhost";
-                    r.ExchangeName = "students";
+                    r.HostName = rabbitMqOptions.HostName;
+                    r.ExchangeName = rabbitMqOptions.ExchangeName;
                 });
 
                 x.FailedRetryCount = 5;
                 x.FailedThresholdCallback = failed =>
                 {
-                    Log.Error($@"A message of type {failed.MessageType} failed after executing {x.FailedRetryCount} several times, 
+                    Log.Error(
+                        $@"A message of type {failed.MessageType} failed after executing {x.FailedRetryCount} several times, 
                         requiring manual troubleshooting. Message name: {failed.Message.GetName()}");
                 };
                 x.JsonSerializerOptions.Encoder = JavaScriptEncoder.Create(UnicodeRanges.All);
             });
-
+            
+            services.AddOpenTelemetry();
+            
             return services;
         }
 

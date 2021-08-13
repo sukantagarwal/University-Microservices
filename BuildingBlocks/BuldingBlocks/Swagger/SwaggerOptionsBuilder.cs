@@ -2,8 +2,8 @@ namespace BuildingBlocks.Swagger
 {
     internal sealed class SwaggerOptionsBuilder : ISwaggerOptionsBuilder
     {
-        private readonly SwaggerOptions _options = new SwaggerOptions();
-        
+        private readonly SwaggerOptions _options = new();
+
         public ISwaggerOptionsBuilder Enable(bool enabled)
         {
             _options.Enabled = enabled;
@@ -46,6 +46,9 @@ namespace BuildingBlocks.Swagger
             return this;
         }
 
-        public SwaggerOptions Build() => _options;
+        public SwaggerOptions Build()
+        {
+            return _options;
+        }
     }
 }

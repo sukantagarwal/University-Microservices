@@ -7,7 +7,7 @@ namespace University.Departments.Api.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
-    public class DepartmentController: ControllerBase
+    public class DepartmentController : ControllerBase
     {
         private readonly ICommandDispatcher _commandDispatcher;
 
@@ -15,14 +15,14 @@ namespace University.Departments.Api.Controllers
         {
             _commandDispatcher = commandDispatcher;
         }
-        
+
         [HttpPost(nameof(Create))]
         public async Task<ActionResult> Create(AddDepartmentCommand command)
         {
             await _commandDispatcher.SendAsync(command);
             return Ok();
         }
-        
+
         [HttpPost(nameof(AssignAdministrator))]
         public async Task<ActionResult> AssignAdministrator(AssignAdministratorCommand command)
         {

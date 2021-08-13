@@ -19,34 +19,34 @@ namespace University.Instructors.Infrastructure
 
             services.AddDbContext<InstructorDbContext>(options =>
                 options.UseSqlServer(connectionString));
-            
-            
-            var outboxOptions = services.GetOptions<OutboxOptions>("outbox");
+
+
+            var outboxOptions = services.GetOptions<Options.OutboxOptions>("outbox");
             services.AddSingleton(outboxOptions);
-            
-            services.AddTransient<InstructorDbContext>(provider => provider.GetService<InstructorDbContext>());
-            
+
+            services.AddTransient(provider => provider.GetService<InstructorDbContext>());
+
             services.AddDbContext<InstructorDbContext>();
-            
+
             services.AddTransient<IMessageBroker, MessageBroker>();
             services.AddTransient<IEventMapper, EventMapper>();
             services.AddTransient<IEventProcessor, EventProcessor>();
-            
+
             services.AddCap(x =>
             {
-                x.UseEntityFramework<InstructorDbContext>(); 
-            
+                x.UseEntityFramework<InstructorDbContext>();
+
                 x.UseSqlServer(connectionString);
-            
-                x.UseRabbitMQ( r=>
+
+                x.UseRabbitMQ(r =>
                 {
                     r.HostName = "localhost";
                     r.ExchangeName = "instructors";
                 });
-            
+
                 x.FailedRetryCount = 5;
             });
-            
+
             return services;
         }
 

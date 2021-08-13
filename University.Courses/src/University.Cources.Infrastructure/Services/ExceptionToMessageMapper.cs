@@ -6,13 +6,15 @@ using University.Cources.Application.Exceptions;
 
 namespace University.Cources.Infrastructure.Services
 {
-    public class ExceptionToMessageMapper: IExceptionToMessageMapper
+    public class ExceptionToMessageMapper : IExceptionToMessageMapper
     {
         public IRejectedEvent Map(Exception exception, object message)
-        => exception switch
+        {
+            return exception switch
             {
-            DuplicateTitleException ex => new AddCourseRejected(ex.Id , ex.Message),
+                DuplicateTitleException ex => new AddCourseRejected(ex.Id, ex.Message),
                 _ => null
             };
+        }
     }
 }

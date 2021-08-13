@@ -9,7 +9,8 @@ namespace University.Cources.Infrastructure.Services
     public class ExceptionToResponseMapper : IExceptionToResponseMapper
     {
         public ExceptionResponse Map(Exception exception)
-            => exception switch
+        {
+            return exception switch
             {
                 DomainException ex => new ExceptionResponse(new {reason = ex.Message},
                     HttpStatusCode.BadRequest),
@@ -18,5 +19,6 @@ namespace University.Cources.Infrastructure.Services
                 _ => new ExceptionResponse(new {code = "error", reason = "There was an error."},
                     HttpStatusCode.BadRequest)
             };
+        }
     }
 }

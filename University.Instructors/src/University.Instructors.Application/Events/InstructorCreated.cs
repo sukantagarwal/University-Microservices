@@ -3,13 +3,13 @@ using BuildingBlocks.CQRS.Events;
 
 namespace University.Instructors.Application.Events
 {
-    public class InstructorCreated: IEvent
+    public class InstructorCreated : IEvent
     {
-        public Guid Id { get;}
-
         public InstructorCreated(Guid id)
         {
             Id = id;
         }
+
+        public Guid Id { get; }
     }
 }

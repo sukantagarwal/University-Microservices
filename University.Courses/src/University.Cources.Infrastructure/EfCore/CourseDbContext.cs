@@ -8,28 +8,19 @@ using University.Cources.Infrastructure.Configurations;
 
 namespace University.Cources.Infrastructure.EfCore
 {
-    public class CourseDbContext: DbContext, ICourseDbContext
+    public class CourseDbContext : DbContext, ICourseDbContext
     {
         private IDbContextTransaction _currentTransaction;
 
         public CourseDbContext(DbContextOptions<CourseDbContext> options) : base(options)
         {
         }
-        
+
         public DbSet<Course> Courses { get; set; }
 
-        
-        protected override void OnModelCreating(ModelBuilder builder)
-        {
-            builder.ApplyConfiguration(new CourseTypeConfiguration());
-        }
-         
         public async Task BeginTransactionAsync()
         {
-            if (_currentTransaction != null)
-            {
-                return;
-            }
+            if (_currentTransaction != null) return;
 
             _currentTransaction = await Database.BeginTransactionAsync();
         }
@@ -71,6 +62,12 @@ namespace University.Cources.Infrastructure.EfCore
                     _currentTransaction = null;
                 }
             }
+        }
+
+
+        protected override void OnModelCreating(ModelBuilder builder)
+        {
+            builder.ApplyConfiguration(new CourseTypeConfiguration());
         }
     }
 }

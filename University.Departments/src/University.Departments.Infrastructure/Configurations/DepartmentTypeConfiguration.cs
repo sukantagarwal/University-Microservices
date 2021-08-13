@@ -4,7 +4,7 @@ using University.Departments.Core.Entities;
 
 namespace University.Departments.Infrastructure.Configurations
 {
-    public class DepartmentTypeConfiguration: IEntityTypeConfiguration<Department>
+    public class DepartmentTypeConfiguration : IEntityTypeConfiguration<Department>
     {
         public void Configure(EntityTypeBuilder<Department> builder)
         {
@@ -23,11 +23,10 @@ namespace University.Departments.Infrastructure.Configurations
 
             builder.Property(r => r.IsDeleted)
                 .IsRequired();
-                
-            
+
+
             builder.Property(r => r.LastModified)
                 .IsRequired();
-
         }
     }
 }

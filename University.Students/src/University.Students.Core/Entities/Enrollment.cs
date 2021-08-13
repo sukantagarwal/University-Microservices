@@ -4,12 +4,8 @@ using University.Students.Core.Events;
 
 namespace University.Students.Core.Entities
 {
-    public class Enrollment: BaseAggregateRoot<Enrollment, Guid>
+    public class Enrollment : BaseAggregateRoot<Enrollment, Guid>
     {
-        public Guid CourseId { get; private set; }
-        public Guid StudentId { get; private set; }
-        public Grade? Grade { get; private set; }
-        
         private Enrollment(Guid id, Guid studentId, Guid courseId)
         {
             Id = id;
@@ -18,10 +14,14 @@ namespace University.Students.Core.Entities
 
             AddEvent(new EnrollmentCreatedDomainEvent(this));
         }
-        
+
+        public Guid CourseId { get; }
+        public Guid StudentId { get; }
+        public Grade? Grade { get; private set; }
+
         public static Enrollment CreateNew(Guid studentId, Guid courseId)
         {
-            return new Enrollment(Guid.NewGuid(), studentId,courseId);
+            return new(Guid.NewGuid(), studentId, courseId);
         }
 
         public void AddGrade(Grade grade)
@@ -29,7 +29,7 @@ namespace University.Students.Core.Entities
             Grade = grade;
         }
     }
-    
+
     public enum Grade
     {
         A,
@@ -38,5 +38,4 @@ namespace University.Students.Core.Entities
         D,
         F
     }
-    
 }

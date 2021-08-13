@@ -5,7 +5,8 @@ namespace University.Departments.Core.Events
 {
     public class DepartmentCreatedDomainEvent : IDomainEvent
     {
-        public DepartmentCreatedDomainEvent(Guid id, string name, decimal budget, DateTime startDate, Guid? instructorId)
+        public DepartmentCreatedDomainEvent(Guid id, string name, decimal budget, DateTime startDate,
+            Guid? instructorId)
         {
             Id = id;
             Name = name;
@@ -15,10 +16,9 @@ namespace University.Departments.Core.Events
         }
 
         public Guid Id { get; }
-        public string Name { get;}
-        public decimal Budget { get;}
-        public DateTime StartDate { get;}
-        public Guid? InstructorId { get;}
-
+        public string Name { get; }
+        public decimal Budget { get; }
+        public DateTime StartDate { get; }
+        public Guid? InstructorId { get; }
     }
 }

@@ -11,14 +11,18 @@ namespace University.Departments.Infrastructure.Services
     internal sealed class EventMapper : IEventMapper
     {
         public IEnumerable<IEvent> MapAll(IEnumerable<IDomainEvent> events)
-            => events.Select(Map);
+        {
+            return events.Select(Map);
+        }
 
         public IEvent Map(IDomainEvent @event)
-            => @event switch
+        {
+            return @event switch
             {
                 DepartmentCreatedDomainEvent e => new DepartmentCreated(e.Id),
                 AdministratorAssignedDomainEvent e => new AdministratorAssigned(e.InstructorId, e.DepartmentId),
                 _ => null
             };
+        }
     }
 }

@@ -8,28 +8,19 @@ using University.Departments.Infrastructure.Configurations;
 
 namespace University.Departments.Infrastructure.EfCore
 {
-    public class DepartmentDbContext: DbContext, IDepartmentDbContext
-    { 
+    public class DepartmentDbContext : DbContext, IDepartmentDbContext
+    {
         private IDbContextTransaction _currentTransaction;
 
-         public DepartmentDbContext(DbContextOptions<DepartmentDbContext> options) : base(options)
-         {
-         }
-        
-         public DbSet<Department> Departments { get; set; }
-
-        
-         protected override void OnModelCreating(ModelBuilder builder)
-         {
-             builder.ApplyConfiguration(new DepartmentTypeConfiguration());
-         }
-         
-         public async Task BeginTransactionAsync()
+        public DepartmentDbContext(DbContextOptions<DepartmentDbContext> options) : base(options)
         {
-            if (_currentTransaction != null)
-            {
-                return;
-            }
+        }
+
+        public DbSet<Department> Departments { get; set; }
+
+        public async Task BeginTransactionAsync()
+        {
+            if (_currentTransaction != null) return;
 
             _currentTransaction = await Database.BeginTransactionAsync();
         }
@@ -61,7 +52,7 @@ namespace University.Departments.Infrastructure.EfCore
         {
             try
             {
-               await _currentTransaction!.RollbackAsync(cancellationToken);
+                await _currentTransaction!.RollbackAsync(cancellationToken);
             }
             finally
             {
@@ -71,6 +62,12 @@ namespace University.Departments.Infrastructure.EfCore
                     _currentTransaction = null;
                 }
             }
+        }
+
+
+        protected override void OnModelCreating(ModelBuilder builder)
+        {
+            builder.ApplyConfiguration(new DepartmentTypeConfiguration());
         }
     }
 }

@@ -5,7 +5,7 @@ using Newtonsoft.Json.Serialization;
 namespace BuildingBlocks.EventStore
 {
     /// <summary>
-    /// https://www.mking.net/blog/working-with-private-setters-in-json-net
+    ///     https://www.mking.net/blog/working-with-private-setters-in-json-net
     /// </summary>
     public class PrivateSetterContractResolver : DefaultContractResolver
     {

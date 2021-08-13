@@ -2,10 +2,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using BuildingBlocks.Logging.Options;
-using BuildingBlocks.Types;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Serilog;
 using Serilog.Events;
@@ -18,52 +16,44 @@ namespace BuildingBlocks.Logging
     {
         private const string LoggerSectionName = "logger";
         private const string AppSectionName = "app";
-        
+
         public static IHostBuilder UseLogging(this IHostBuilder builder,
             Action<LoggerConfiguration> configure = null, string loggerSectionName = LoggerSectionName,
             string appSectionName = AppSectionName)
-            => builder.UseSerilog((context, services, loggerConfiguration) =>
+        {
+            return builder.UseSerilog((context, services, loggerConfiguration) =>
             {
-                if (string.IsNullOrWhiteSpace(loggerSectionName))
-                {
-                    loggerSectionName = LoggerSectionName;
-                }
+                if (string.IsNullOrWhiteSpace(loggerSectionName)) loggerSectionName = LoggerSectionName;
 
-                if (string.IsNullOrWhiteSpace(appSectionName))
-                {
-                    appSectionName = AppSectionName;
-                }
+                if (string.IsNullOrWhiteSpace(appSectionName)) appSectionName = AppSectionName;
 
                 var loggerOptions = context.Configuration.GetOptions<LoggerOptions>(loggerSectionName);
-                var appOptions = context.Configuration.GetOptions<AppOptions>(appSectionName);
+                var appOptions = context.Configuration.GetOptions<Types.Options.AppOptions>(appSectionName);
 
                 MapOptions(loggerOptions, appOptions, loggerConfiguration, context.HostingEnvironment.EnvironmentName);
                 configure?.Invoke(loggerConfiguration);
             });
+        }
 
         public static IWebHostBuilder UseLogging(this IWebHostBuilder webHostBuilder,
             Action<LoggerConfiguration> configure = null, string loggerSectionName = LoggerSectionName,
             string appSectionName = AppSectionName)
-            => webHostBuilder.UseSerilog((context, loggerConfiguration) =>
+        {
+            return webHostBuilder.UseSerilog((context, loggerConfiguration) =>
             {
-                if (string.IsNullOrWhiteSpace(loggerSectionName))
-                {
-                    loggerSectionName = LoggerSectionName;
-                }
+                if (string.IsNullOrWhiteSpace(loggerSectionName)) loggerSectionName = LoggerSectionName;
 
-                if (string.IsNullOrWhiteSpace(appSectionName))
-                {
-                    appSectionName = AppSectionName;
-                }
+                if (string.IsNullOrWhiteSpace(appSectionName)) appSectionName = AppSectionName;
 
                 var loggerOptions = context.Configuration.GetOptions<LoggerOptions>(loggerSectionName);
-                var appOptions = context.Configuration.GetOptions<AppOptions>(appSectionName);
+                var appOptions = context.Configuration.GetOptions<Types.Options.AppOptions>(appSectionName);
 
                 MapOptions(loggerOptions, appOptions, loggerConfiguration, context.HostingEnvironment.EnvironmentName);
                 configure?.Invoke(loggerConfiguration);
             });
+        }
 
-        private static void MapOptions(LoggerOptions loggerOptions, AppOptions appOptions,
+        private static void MapOptions(LoggerOptions loggerOptions, Types.Options.AppOptions appOptions,
             LoggerConfiguration loggerConfiguration, string environmentName)
         {
             var level = GetLogEventLevel(loggerOptions.Level);
@@ -76,9 +66,7 @@ namespace BuildingBlocks.Logging
                 .Enrich.WithProperty("Version", appOptions.Version);
 
             foreach (var (key, value) in loggerOptions.Tags ?? new Dictionary<string, object>())
-            {
                 loggerConfiguration.Enrich.WithProperty(key, value);
-            }
 
             foreach (var (key, value) in loggerOptions.MinimumLevelOverrides ?? new Dictionary<string, string>())
             {
@@ -103,24 +91,18 @@ namespace BuildingBlocks.Logging
             var elkOptions = options.Elk ?? new ElkOptions();
             var seqOptions = options.Seq ?? new SeqOptions();
 
-            if (consoleOptions.Enabled)
-            {
-                loggerConfiguration.WriteTo.Console();
-            }
+            if (consoleOptions.Enabled) loggerConfiguration.WriteTo.Console();
 
             if (fileOptions.Enabled)
             {
                 var path = string.IsNullOrWhiteSpace(fileOptions.Path) ? "logs/.txt" : fileOptions.Path;
                 if (!Enum.TryParse<RollingInterval>(fileOptions.Interval, true, out var interval))
-                {
                     interval = RollingInterval.Day;
-                }
 
                 loggerConfiguration.WriteTo.File(path, rollingInterval: interval);
             }
 
             if (elkOptions.Enabled)
-            {
                 loggerConfiguration.WriteTo.Elasticsearch(new ElasticsearchSinkOptions(new Uri(elkOptions.Url))
                 {
                     MinimumLogEventLevel = level,
@@ -134,23 +116,21 @@ namespace BuildingBlocks.Logging
                             ? connectionConfiguration.BasicAuthentication(elkOptions.Username, elkOptions.Password)
                             : connectionConfiguration
                 });
-            }
 
-            if (seqOptions.Enabled)
-            {
-                loggerConfiguration.WriteTo.Seq(seqOptions.Url, apiKey: seqOptions.ApiKey);
-            }
+            if (seqOptions.Enabled) loggerConfiguration.WriteTo.Seq(seqOptions.Url, apiKey: seqOptions.ApiKey);
         }
 
         private static LogEventLevel GetLogEventLevel(string level)
-            => Enum.TryParse<LogEventLevel>(level, true, out var logLevel) 
+        {
+            return Enum.TryParse<LogEventLevel>(level, true, out var logLevel)
                 ? logLevel
                 : LogEventLevel.Information;
-        
+        }
+
         public static IApplicationBuilder UserCorrelationContextLogging(this IApplicationBuilder app)
         {
             app.UseMiddleware<CorrelationContextLoggingMiddleware>();
-            
+
             return app;
         }
     }

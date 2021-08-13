@@ -2,23 +2,25 @@
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
-using System.Reflection;
 
 namespace BuildingBlocks.Types
 {
     public abstract class BaseAggregateRoot<TA, TKey> : BaseEntity<TKey>, IAggregateRoot<TKey>
         where TA : class, IAggregateRoot<TKey>
     {
-        private readonly Queue<IDomainEvent> _events = new Queue<IDomainEvent>();
-        public IEnumerable<IDomainEvent> Events => _events.ToImmutableArray();
-      //  public long Version { get; set; }
+        private readonly Queue<IDomainEvent> _events = new();
+        //  public long Version { get; set; }
 
-        protected BaseAggregateRoot() { }
-        
+        protected BaseAggregateRoot()
+        {
+        }
+
         protected BaseAggregateRoot(TKey id) : base(id)
         {
         }
-        
+
+        public IEnumerable<IDomainEvent> Events => _events.ToImmutableArray();
+
         public void ClearEvents()
         {
             _events.Clear();
@@ -27,17 +29,18 @@ namespace BuildingBlocks.Types
         protected void AddEvent(IDomainEvent @event)
         {
             _events.Enqueue(@event);
-           
-         //   this.Apply(@event);
 
-           // this.Version++;
+            //   this.Apply(@event);
+
+            // this.Version++;
         }
 
-       // protected abstract void Apply(IDomainEvent<TKey> @event);
-        
+        // protected abstract void Apply(IDomainEvent<TKey> @event);
+
         #region Factory
-       // private static readonly ConstructorInfo CTor;
-        
+
+        // private static readonly ConstructorInfo CTor;
+
         // static BaseAggregateRoot()
         // {
         //     var aggregateType = typeof(TA);
@@ -49,7 +52,7 @@ namespace BuildingBlocks.Types
         //
         public static TA Create(IEnumerable<IDomainEvent<TKey>> events)
         {
-            if(null == events || !events.Any())
+            if (null == events || !events.Any())
                 throw new ArgumentNullException(nameof(events));
             // var result = (TA)CTor.Invoke(new object[0]);
             //
@@ -63,8 +66,7 @@ namespace BuildingBlocks.Types
             // return result;
             return null;
         }
-        
+
         #endregion Factory
-        
     }
 }

@@ -8,29 +8,20 @@ using University.Students.Infrastructure.Configurations;
 
 namespace University.Students.Infrastructure.EfCore
 {
-    public class StudentDbContext: DbContext, IStudentDbContext
+    public class StudentDbContext : DbContext, IStudentDbContext
     {
-         private IDbContextTransaction _currentTransaction;
+        private IDbContextTransaction _currentTransaction;
 
-         public StudentDbContext(DbContextOptions<StudentDbContext> options) : base(options)
-         {
-         }
-        
-         public DbSet<Student> Students { get; set; }
-         public DbSet<Enrollment> Enrollments { get; set; }
-         
-         protected override void OnModelCreating(ModelBuilder builder)
-         {
-             builder.ApplyConfiguration(new StudentTypeConfiguration());
-             builder.ApplyConfiguration(new EnrollmentTypeConfiguration());
-         }
-        
+        public StudentDbContext(DbContextOptions<StudentDbContext> options) : base(options)
+        {
+        }
+
+        public DbSet<Student> Students { get; set; }
+        public DbSet<Enrollment> Enrollments { get; set; }
+
         public async Task BeginTransactionAsync()
         {
-            if (_currentTransaction != null)
-            {
-                return;
-            }
+            if (_currentTransaction != null) return;
 
             _currentTransaction = await Database.BeginTransactionAsync();
         }
@@ -62,7 +53,7 @@ namespace University.Students.Infrastructure.EfCore
         {
             try
             {
-               await _currentTransaction!.RollbackAsync(cancellationToken);
+                await _currentTransaction!.RollbackAsync(cancellationToken);
             }
             finally
             {
@@ -72,6 +63,12 @@ namespace University.Students.Infrastructure.EfCore
                     _currentTransaction = null;
                 }
             }
+        }
+
+        protected override void OnModelCreating(ModelBuilder builder)
+        {
+            builder.ApplyConfiguration(new StudentTypeConfiguration());
+            builder.ApplyConfiguration(new EnrollmentTypeConfiguration());
         }
     }
 }

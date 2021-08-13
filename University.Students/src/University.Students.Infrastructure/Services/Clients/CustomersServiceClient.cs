@@ -41,3 +41,4 @@
 //             => _client.GetAsync<CustomerStateDto>($"{_url}/customers/{id}/state");
 //     }
 // }
+

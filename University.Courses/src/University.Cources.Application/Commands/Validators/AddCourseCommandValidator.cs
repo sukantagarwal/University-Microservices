@@ -2,7 +2,7 @@
 
 namespace University.Cources.Application.Commands.Validators
 {
-    public class AddCourseCommandValidator: AbstractValidator<AddCourseCommand>
+    public class AddCourseCommandValidator : AbstractValidator<AddCourseCommand>
     {
         public AddCourseCommandValidator()
         {

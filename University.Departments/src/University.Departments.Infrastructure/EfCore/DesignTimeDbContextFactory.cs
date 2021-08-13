@@ -9,9 +9,9 @@ namespace University.Departments.Infrastructure.EfCore
         {
             var builder = new DbContextOptionsBuilder<DepartmentDbContext>();
 
-            builder.UseSqlServer("Data Source=.\\sqlexpress;Initial Catalog=Department;Integrated Security=True;MultipleActiveResultSets=True;Connect Timeout=30");
+            builder.UseSqlServer(
+                "Data Source=.\\sqlexpress;Initial Catalog=Department;Integrated Security=True;MultipleActiveResultSets=True;Connect Timeout=30");
             return new DepartmentDbContext(builder.Options);
         }
     }
 }
-

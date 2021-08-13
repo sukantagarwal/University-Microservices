@@ -9,10 +9,12 @@ namespace University.Cources.Infrastructure.Services
     internal sealed class EventMapper : IEventMapper
     {
         public IEvent Map(IDomainEvent @event)
-            => @event switch
+        {
+            return @event switch
             {
                 CourseCreatedDomainEvent e => new CourseCreated(e.Id),
                 _ => null
             };
+        }
     }
 }

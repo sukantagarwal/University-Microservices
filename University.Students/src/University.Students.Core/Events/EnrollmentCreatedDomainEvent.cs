@@ -6,10 +6,6 @@ namespace University.Students.Core.Events
 {
     public class EnrollmentCreatedDomainEvent : IDomainEvent
     {
-        public Guid Id { get; set; }
-        public Guid CourseId { get;}
-        public Guid StudentId { get;}
-        public Grade? Grade { get;}
         public EnrollmentCreatedDomainEvent(Enrollment enrollment)
         {
             Id = enrollment.Id;
@@ -17,5 +13,10 @@ namespace University.Students.Core.Events
             StudentId = enrollment.StudentId;
             Grade = enrollment!.Grade;
         }
+
+        public Guid Id { get; set; }
+        public Guid CourseId { get; }
+        public Guid StudentId { get; }
+        public Grade? Grade { get; }
     }
 }
