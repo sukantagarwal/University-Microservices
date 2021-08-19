@@ -5,7 +5,6 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using DotNetCore.CAP;
 using DotNetCore.CAP.Internal;
@@ -101,7 +100,8 @@ namespace BuildingBlocks.RabbitMq.Cap
         
         private void AddMessagingTags(Activity activity, TransportMessage message)
         {
-            activity?.SetTag("message", Encoding.UTF8.GetString(message.Body.ToArray()));
+            activity?.SetTag("message_id", message.GetId());
+            activity?.SetTag("correlation_id", message.GetCorrelationId());
             activity?.SetTag("messaging_system", "rabbitmq");
             activity?.SetTag("destination_kind", "queue");
             activity?.SetTag("exchange_name", _exchange);

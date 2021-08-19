@@ -189,8 +189,6 @@ namespace BuildingBlocks.RabbitMq.Cap
 
             using (var activity = ActivitySource.StartActivity(activityName, ActivityKind.Consumer, parentContext.ActivityContext))
             {
-                AddMessagingTags(activity, e);
-                
                 var headers = new Dictionary<string, string>();
                 if (e.BasicProperties.Headers != null)
                 {
@@ -213,6 +211,8 @@ namespace BuildingBlocks.RabbitMq.Cap
                 }
 
                 var message = new TransportMessage(headers, e.Body.ToArray());
+                
+                AddMessagingTags(activity, message);
 
                 OnMessageReceived?.Invoke(e.DeliveryTag, message);
             }
@@ -229,13 +229,14 @@ namespace BuildingBlocks.RabbitMq.Cap
             OnLog?.Invoke(sender, args);
         }
         
-        private void AddMessagingTags(Activity activity, BasicDeliverEventArgs e)
+        private void AddMessagingTags(Activity activity, TransportMessage message)
         {
-            activity?.SetTag("message",  Encoding.UTF8.GetString(e.Body.Span.ToArray()));
+            activity?.SetTag("message_id", message.GetId());
+            activity?.SetTag("correlation_id", message.GetCorrelationId());
             activity?.SetTag("messaging_system", "rabbitmq");
             activity?.SetTag("destination_kind", "queue");
             activity?.SetTag("exchange_name", _exchangeName);
-            activity?.SetTag("routing_key", e.RoutingKey);
+            activity?.SetTag("routing_key", message.GetName());
         }
         
         private IEnumerable<string> ExtractTraceContextFromBasicProperties(IBasicProperties props, string key)
