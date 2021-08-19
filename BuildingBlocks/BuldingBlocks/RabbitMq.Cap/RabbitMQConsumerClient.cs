@@ -7,6 +7,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading;
+using DotNetCore.CAP;
 using DotNetCore.CAP.Messages;
 using DotNetCore.CAP.Transport;
 using Microsoft.Extensions.Options;
@@ -16,7 +17,7 @@ using RabbitMQ.Client;
 using RabbitMQ.Client.Events;
 using Headers = DotNetCore.CAP.Messages.Headers;
 
-namespace DotNetCore.CAP.RabbitMQ
+namespace BuildingBlocks.RabbitMq.Cap
 {
     internal sealed class RabbitMQConsumerClient : IConsumerClient
     {
@@ -26,7 +27,7 @@ namespace DotNetCore.CAP.RabbitMQ
         private readonly string _exchangeName;
         private readonly string _queueName;
         private readonly RabbitMQOptions _rabbitMQOptions;
-        private static readonly ActivitySource ActivitySource = new ActivitySource(nameof(RabbitMQConsumerClient));
+        private static readonly ActivitySource ActivitySource = new ActivitySource(nameof(ITransport));
         private static readonly TextMapPropagator Propagator = new TraceContextPropagator();
         private IModel _channel;
 
@@ -184,42 +185,37 @@ namespace DotNetCore.CAP.RabbitMQ
             var parentContext = Propagator.Extract(default, e.BasicProperties, ExtractTraceContextFromBasicProperties);
             Baggage.Current = parentContext.Baggage;
             
-            var activityName = $"{e.RoutingKey} receive";
-            
+            var activityName = e.RoutingKey;
+
             using (var activity = ActivitySource.StartActivity(activityName, ActivityKind.Consumer, parentContext.ActivityContext))
             {
-                var messageBody = Encoding.UTF8.GetString(e.Body.Span.ToArray());
-                    
-                activity?.SetTag("message", messageBody);
-
-                AddMessagingTags(activity);
-
-                Thread.Sleep(1000);
-            }
-            
-            var headers = new Dictionary<string, string>();
-            if (e.BasicProperties.Headers != null)
-            {
-                foreach (var header in e.BasicProperties.Headers)
+                AddMessagingTags(activity, e);
+                
+                var headers = new Dictionary<string, string>();
+                if (e.BasicProperties.Headers != null)
                 {
-                    headers.Add(header.Key, header.Value == null ? null : Encoding.UTF8.GetString((byte[])header.Value));
+                    foreach (var header in e.BasicProperties.Headers)
+                    {
+                        headers.Add(header.Key,
+                            header.Value == null ? null : Encoding.UTF8.GetString((byte[]) header.Value));
+                    }
                 }
-            }
 
-            headers.Add(Headers.Group, _queueName);
+                headers.Add(Headers.Group, _queueName);
 
-            if (_rabbitMQOptions.CustomHeaders != null)
-            {
-                var customHeaders = _rabbitMQOptions.CustomHeaders(e);
-                foreach (var customHeader in customHeaders)
+                if (_rabbitMQOptions.CustomHeaders != null)
                 {
-                    headers[customHeader.Key] = customHeader.Value;
+                    var customHeaders = _rabbitMQOptions.CustomHeaders(e);
+                    foreach (var customHeader in customHeaders)
+                    {
+                        headers[customHeader.Key] = customHeader.Value;
+                    }
                 }
+
+                var message = new TransportMessage(headers, e.Body.ToArray());
+
+                OnMessageReceived?.Invoke(e.DeliveryTag, message);
             }
-
-            var message = new TransportMessage(headers, e.Body.ToArray());
-
-            OnMessageReceived?.Invoke(e.DeliveryTag, message);
         }
 
         private void OnConsumerShutdown(object sender, ShutdownEventArgs e)
@@ -233,12 +229,13 @@ namespace DotNetCore.CAP.RabbitMQ
             OnLog?.Invoke(sender, args);
         }
         
-        private void AddMessagingTags(Activity activity)
+        private void AddMessagingTags(Activity activity, BasicDeliverEventArgs e)
         {
-            activity?.SetTag("messaging.system", "rabbitmq");
-            activity?.SetTag("messaging.destination_kind", "queue");
-            activity?.SetTag("messaging.destination", _exchangeName);
-            activity?.SetTag("messaging.rabbitmq.routing_key", _queueName);
+            activity?.SetTag("message",  Encoding.UTF8.GetString(e.Body.Span.ToArray()));
+            activity?.SetTag("messaging_system", "rabbitmq");
+            activity?.SetTag("destination_kind", "queue");
+            activity?.SetTag("exchange_name", _exchangeName);
+            activity?.SetTag("routing_key", e.RoutingKey);
         }
         
         private IEnumerable<string> ExtractTraceContextFromBasicProperties(IBasicProperties props, string key)

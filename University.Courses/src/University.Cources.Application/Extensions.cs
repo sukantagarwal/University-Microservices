@@ -9,6 +9,7 @@ namespace University.Cources.Application
     {
         public static IServiceCollection AddApplication(this IServiceCollection services)
         {
+            services.AddTransient<Test>();
             return services
                 .AddCommandHandlers()
                 .AddEventHandlers()

@@ -1,11 +1,10 @@
 ﻿using System.Threading.Tasks;
-using BuildingBlocks.OpenTelemetry.Messaging;
 using DotNetCore.CAP;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
-using University.Students.Application.Events;
+using University.Cources.Application.Events.External;
 
-namespace University.Students.Application
+namespace University.Cources.Application
 {
     public class Test : ICapSubscribe
     {
@@ -16,7 +15,7 @@ namespace University.Students.Application
             _logger = logger;
         }
 
-        [CapSubscribe(nameof(StudentCreated))]
+        [CapSubscribe("StudentCreated")]
         public void CheckReceivedMessage(StudentCreated student)
         {
             Task.Delay(5000).GetAwaiter().GetResult();

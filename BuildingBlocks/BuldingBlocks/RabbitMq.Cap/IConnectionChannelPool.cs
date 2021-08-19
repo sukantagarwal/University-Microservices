@@ -3,7 +3,7 @@
 
 using RabbitMQ.Client;
 
-namespace DotNetCore.CAP.RabbitMQ
+namespace BuildingBlocks.RabbitMq.Cap
 {
     public interface IConnectionChannelPool
     {

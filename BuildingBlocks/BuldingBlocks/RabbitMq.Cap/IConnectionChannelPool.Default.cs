@@ -6,11 +6,12 @@ using System.Collections.Concurrent;
 using System.Diagnostics;
 using System.Reflection;
 using System.Threading;
+using DotNetCore.CAP;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using RabbitMQ.Client;
 
-namespace DotNetCore.CAP.RabbitMQ
+namespace BuildingBlocks.RabbitMq.Cap
 {
     public class ConnectionChannelPool : IConnectionChannelPool, IDisposable
     {
@@ -130,7 +131,7 @@ namespace DotNetCore.CAP.RabbitMQ
             {
                 model = GetConnection().CreateModel();
             }
-            catch (Exception e)
+            catch (System.Exception e)
             {
                 _logger.LogError(e, "RabbitMQ channel model create failed!");
                 Console.WriteLine(e);

@@ -3,13 +3,15 @@ using System.Text.Unicode;
 using BuildingBlocks;
 using BuildingBlocks.Exception;
 using BuildingBlocks.OpenTelemetry;
-using BuildingBlocks.OpenTelemetry.Messaging;
 using BuildingBlocks.Types;
 using DotNetCore.CAP.Messages;
+using DotNetCore.CAP.Transport;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using OpenTelemetry.Resources;
+using OpenTelemetry.Trace;
 using Serilog;
 using University.Students.Application;
 using University.Students.Application.Services;
@@ -43,10 +45,7 @@ namespace University.Students.Infrastructure
             services.AddTransient<IMessageBroker, MessageBroker>();
             services.AddTransient<IEventMapper, EventMapper>();
             services.AddTransient<IEventProcessor, EventProcessor>();
-
-
-            //services.AddTransient<Test>();
-
+            
             services.AddCap(x =>
             {
                 x.UseEntityFramework<StudentDbContext>();
@@ -68,7 +67,7 @@ namespace University.Students.Infrastructure
                 };
                 x.JsonSerializerOptions.Encoder = JavaScriptEncoder.Create(UnicodeRanges.All);
             });
-            
+
             services.AddOpenTelemetry();
             
             return services;

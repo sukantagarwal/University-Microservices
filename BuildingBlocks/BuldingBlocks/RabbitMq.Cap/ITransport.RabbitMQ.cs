@@ -5,7 +5,9 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
+using DotNetCore.CAP;
 using DotNetCore.CAP.Internal;
 using DotNetCore.CAP.Messages;
 using DotNetCore.CAP.Transport;
@@ -14,13 +16,13 @@ using OpenTelemetry;
 using OpenTelemetry.Context.Propagation;
 using RabbitMQ.Client;
 
-namespace DotNetCore.CAP.RabbitMQ
+namespace BuildingBlocks.RabbitMq.Cap
 {
     internal sealed class RabbitMQTransport : ITransport
     {
         private readonly IConnectionChannelPool _connectionChannelPool;
         private readonly ILogger _logger;
-        private static readonly ActivitySource ActivitySource = new ActivitySource(nameof(RabbitMQTransport));
+        private static readonly ActivitySource ActivitySource = new ActivitySource(nameof(ITransport));
         private static readonly TextMapPropagator Propagator = Propagators.DefaultTextMapPropagator;
         private readonly string _exchange;
 
@@ -40,7 +42,7 @@ namespace DotNetCore.CAP.RabbitMQ
             IModel channel = null;
             try
             {
-                var activityName = $"{message.GetName()} send";
+                var activityName = message.GetName();
 
                 using (var activity = ActivitySource.StartActivity(activityName, ActivityKind.Producer))
                 {
@@ -64,20 +66,20 @@ namespace DotNetCore.CAP.RabbitMQ
 
                     Propagator.Inject(new PropagationContext(contextToInject, Baggage.Current), props, InjectTraceContextIntoBasicProperties);
 
-                    AddMessagingTags(activity, message.GetName());
+                    AddMessagingTags(activity, message);
+                    
+                    channel.WaitForConfirmsOrDie(TimeSpan.FromSeconds(5));
 
                     channel.ExchangeDeclare(_exchange, RabbitMQOptions.ExchangeType, true);
 
                     channel.BasicPublish(_exchange, message.GetName(), props, message.Body);
-
-                    channel.WaitForConfirmsOrDie(TimeSpan.FromSeconds(5));
 
                     _logger.LogDebug($"RabbitMQ topic message [{message.GetName()}] has been published.");
 
                     return Task.FromResult(OperateResult.Success);
                 }
             }
-            catch (Exception ex)
+            catch (System.Exception ex)
             {
                 var wrapperEx = new PublisherSentFailedException(ex.Message, ex);
                 var errors = new OperateError
@@ -97,12 +99,13 @@ namespace DotNetCore.CAP.RabbitMQ
             }
         }
         
-        private void AddMessagingTags(Activity activity, string queueName)
+        private void AddMessagingTags(Activity activity, TransportMessage message)
         {
-            activity?.SetTag("messaging.system", "rabbitmq");
-            activity?.SetTag("messaging.destination_kind", "queue");
-            activity?.SetTag("messaging.destination", _exchange);
-            activity?.SetTag("messaging.rabbitmq.routing_key", queueName);
+            activity?.SetTag("message", Encoding.UTF8.GetString(message.Body.ToArray()));
+            activity?.SetTag("messaging_system", "rabbitmq");
+            activity?.SetTag("destination_kind", "queue");
+            activity?.SetTag("exchange_name", _exchange);
+            activity?.SetTag("routing_key", message.GetName());
         }
         
         private void InjectTraceContextIntoBasicProperties(IBasicProperties props, string key, string value)

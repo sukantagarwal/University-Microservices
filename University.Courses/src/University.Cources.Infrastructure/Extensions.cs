@@ -2,12 +2,17 @@
 using System.Text.Unicode;
 using BuildingBlocks;
 using BuildingBlocks.Exception;
+using BuildingBlocks.OpenTelemetry;
+using BuildingBlocks.RabbitMq.Cap;
 using BuildingBlocks.Types;
 using DotNetCore.CAP.Messages;
+using DotNetCore.CAP.Transport;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using OpenTelemetry.Resources;
+using OpenTelemetry.Trace;
 using Serilog;
 using University.Cources.Application;
 using University.Cources.Application.Services;
@@ -38,7 +43,7 @@ namespace University.Cources.Infrastructure
             services.AddTransient<IMessageBroker, MessageBroker>();
             services.AddTransient<IEventMapper, EventMapper>();
             services.AddTransient<IEventProcessor, EventProcessor>();
-
+            
             services.AddCap(x =>
             {
                 x.UseEntityFramework<CourseDbContext>();
@@ -49,6 +54,7 @@ namespace University.Cources.Infrastructure
                 {
                     r.HostName = "localhost";
                     r.ExchangeName = "courses";
+                    r.ExchangeName = "students";
                 });
 
                 x.FailedRetryCount = 5;
@@ -60,7 +66,9 @@ namespace University.Cources.Infrastructure
                 };
                 x.JsonSerializerOptions.Encoder = JavaScriptEncoder.Create(UnicodeRanges.All);
             });
-
+            
+            services.AddOpenTelemetry();
+            
             return services;
         }
 
