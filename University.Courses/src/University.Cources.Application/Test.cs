@@ -1,4 +1,5 @@
-﻿using BuildingBlocks.OpenTelemetry.Messaging;
+﻿using System.Threading.Tasks;
+using BuildingBlocks.OpenTelemetry.Messaging;
 using DotNetCore.CAP;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
@@ -18,6 +19,7 @@ namespace University.Students.Application
         [CapSubscribe(nameof(StudentCreated))]
         public void CheckReceivedMessage(StudentCreated student)
         {
+            Task.Delay(5000).GetAwaiter().GetResult();
             _logger.LogInformation(JsonConvert.SerializeObject(student));
         }
     }
