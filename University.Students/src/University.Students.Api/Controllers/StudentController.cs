@@ -19,7 +19,6 @@ namespace University.Students.Api.Controllers
         [HttpPost(nameof(Create))]
         public async Task<ActionResult> Create(AddStudentCommand command)
         {
-            Task.Delay(5000).GetAwaiter().GetResult();
             await _commandDispatcher.SendAsync(command);
             return Ok();
         }
