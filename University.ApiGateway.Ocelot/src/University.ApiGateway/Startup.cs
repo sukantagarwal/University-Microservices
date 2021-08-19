@@ -32,7 +32,7 @@ namespace University.ApiGateway.Ocelot
 
             services.AddSwaggerGen(c =>
             {
-                c.SwaggerDoc("v1", new OpenApiInfo {Title = "University.ApiGateway.Ocelot", Version = "v1"});
+                c.SwaggerDoc("v1", new OpenApiInfo {Title = "University.ApiGateway", Version = "v1"});
             });
         }
 
@@ -43,7 +43,7 @@ namespace University.ApiGateway.Ocelot
             {
                 app.UseDeveloperExceptionPage();
                 app.UseSwagger();
-                app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "University.ApiGateway.Ocelot v1"));
+                app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "University.ApiGateway v1"));
             }
 
             app.UseHttpsRedirection();
