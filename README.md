@@ -52,10 +52,10 @@ Framework 4.5 and higher, which is simple and customisable
 - ✔️ **[`Opentelemetry-dotnet`](https://github.com/open-telemetry/opentelemetry-dotnet)** - The OpenTelemetry .NET Client
 - ✔️ **[`EasyCaching`](https://github.com/dotnetcore/EasyCaching)** - Open source caching library that contains basic usages and some advanced usages of caching which can help us to handle caching more easier.
 
-6.3 Services Structure
+## 4. Services Structure
 Inner each service used clean architecture but we can use also vertical slice architecture also.
 
-![](.\assets\clean-architecture.png)
+![](./assets/clean-architecture.png)
 
 Our clean architecture in each service consists of 4 main parts:
 - **Api** - This layer for responsible for hosting for microservice on .net core webapi and using swagger for documentation.
