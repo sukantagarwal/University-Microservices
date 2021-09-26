@@ -58,7 +58,7 @@ Inner each service used clean architecture but we can use also vertical slice ar
 ![](./assets/clean-architecture.png)
 
 Our clean architecture in each service consists of 4 main parts:
-- **Api** - This layer for responsible for hosting for microservice on .net core webapi and using swagger for documentation.
+- **Api** - This layer responsible for hosting microservice on .net core webapi and using swagger for documentation.
 - **Application** - Here you should find the implementation of use cases related to the module. the application is responsible for requests processing. Application contains use cases, domain events, integration events and its contracts, internal commands.
 - **Domain** - Domain Model in Domain-Driven Design terms implements the applicable Bounded Context
 - **Infrastructure** - This is where the implementation of secondary adapters should be. Secondary adapters are responsible for communication with the external dependencies.
