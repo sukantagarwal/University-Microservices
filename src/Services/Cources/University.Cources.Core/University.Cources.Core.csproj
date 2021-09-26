@@ -5,7 +5,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\University.Cources.Core\University.Cources.Core.csproj" />
+    <ProjectReference Include="..\..\..\BuldingBlocks\BuildingBlocks.csproj" />
   </ItemGroup>
-
+  
 </Project>

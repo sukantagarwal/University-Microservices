@@ -51,3 +51,16 @@ Framework 4.5 and higher, which is simple and customisable
 - ✔️ **[`Scrutor`](https://github.com/khellang/Scrutor)** - Assembly scanning and decoration extensions for Microsoft.Extensions.DependencyInjection
 - ✔️ **[`Opentelemetry-dotnet`](https://github.com/open-telemetry/opentelemetry-dotnet)** - The OpenTelemetry .NET Client
 - ✔️ **[`EasyCaching`](https://github.com/dotnetcore/EasyCaching)** - Open source caching library that contains basic usages and some advanced usages of caching which can help us to handle caching more easier.
+
+6.3 Services Structure
+Inner each service used clean architecture but we can use also vertical slice architecture also.
+
+![](.\assets\clean-architecture.png)
+
+Our clean architecture in each service consists of 4 main parts:
+- **Api** - This layer for responsible for hosting for microservice on .net core webapi and using swagger for documentation.
+- **Application** - Here you should find the implementation of use cases related to the module. the application is responsible for requests processing. Application contains use cases, domain events, integration events and its contracts, internal commands.
+- **Domain** - Domain Model in Domain-Driven Design terms implements the applicable Bounded Context
+- **Infrastructure** - This is where the implementation of secondary adapters should be. Secondary adapters are responsible for communication with the external dependencies.
+infrastructural code responsible for module initialization, background processing, data access, communication with Events Bus and other external components or systems
+

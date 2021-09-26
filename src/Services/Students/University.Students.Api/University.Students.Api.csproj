@@ -12,5 +12,5 @@
     <ProjectReference Include="..\University.Students.Application\University.Students.Application.csproj" />
     <ProjectReference Include="..\University.Students.Infrastructure\University.Students.Infrastructure.csproj" />
   </ItemGroup>
-
+  
 </Project>

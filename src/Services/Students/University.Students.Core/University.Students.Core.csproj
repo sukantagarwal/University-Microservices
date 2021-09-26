@@ -3,8 +3,13 @@
   <PropertyGroup>
     <TargetFramework>net5.0</TargetFramework>
   </PropertyGroup>
-
+  
   <ItemGroup>
-    <ProjectReference Include="..\..\..\BuildingBlocks\BuldingBlocks\BuildingBlocks.csproj" />
+    <Folder Include="Events" />
   </ItemGroup>
+  
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\BuldingBlocks\BuildingBlocks.csproj" />
+  </ItemGroup>
+  
 </Project>

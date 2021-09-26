@@ -5,6 +5,8 @@
     <AddRazorSupportForMvc>true</AddRazorSupportForMvc>
     <ExcludeGeneratedDebugSymbol>False</ExcludeGeneratedDebugSymbol>
     <AssemblyName>BuildingBlocks</AssemblyName>
+    <Configurations>Debug;Release;BuildingBlocks</Configurations>
+    <Platforms>AnyCPU</Platforms>
   </PropertyGroup>
 
 <PropertyGroup>
